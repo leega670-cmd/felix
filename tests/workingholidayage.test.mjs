@@ -31,6 +31,7 @@ function load(today = '2026-10-26T12:00:00') {
   class FixedDate extends Date { constructor(...args) { super(...(args.length ? args : [today])); } }
   const stored = new Map();
   const context = vm.createContext({ document, Date: FixedDate, Option: class { constructor(text, value) { this.text = text; this.value = value; } }, localStorage: { getItem: k => stored.get(k), setItem: (k,v) => stored.set(k,v) }, window: { matchMedia: () => ({ matches: false, addEventListener() {} }), scrollTo() {}, innerHeight: 800, scrollY: 0 } });
+  Object.defineProperty(context, "dataLayer", { get: () => context.window.dataLayer });
   scripts.forEach(s => vm.runInContext(s, context));
   const run = code => vm.runInContext(code, context);
   const birth = (y,m,d) => { for (const [id,v] of [['year',y],['month',m],['day',d]]) elements.get(id).value = String(v); };

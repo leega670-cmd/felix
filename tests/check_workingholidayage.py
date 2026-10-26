@@ -60,6 +60,8 @@ for loc in sitemap.findall('.//{http://www.sitemaps.org/schemas/sitemap/0.9}loc'
     if target.is_dir(): target = target / 'index.html'
     assert target in pages, ('sitemap missing page', loc.text)
 assert '/ja/' not in (ROOT/'sitemap.xml').read_text()
+assert not (ROOT/'ja').exists(), 'Japanese page directory must not be published'
+assert not (ROOT/'_redirects').exists(), 'Removed Japanese routes must return 404'
 assert 'noindex' in (ROOT/'404.html').read_text()
 assert 'Sitemap: https://workingholidayage.com/sitemap.xml' in (ROOT/'robots.txt').read_text()
 print(f'PASS: {len(pages)} HTML pages, scripts, local links, images, sitemap and advertising checks')

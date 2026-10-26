@@ -28,12 +28,12 @@ assert data==(ROOT/'workingholidayage/404.html').read_bytes()
 assert 'adsbygoogle' not in data.decode()
 checks.append({'path':'/wha-qa-nonexistent-20261026','status':status,'matchesRelease':True})
 print('PASS missing URL: real HTTP 404 with reviewed error page',flush=True)
-for path in ['/ja','/ja/']:
+for path in ['/ja','/ja/','/ja/old-page']:
     status,headers,data,url=request(path)
-    assert status==200 and url.rstrip('/')==BASE,(path,status,url)
-    assert data==(ROOT/'workingholidayage/index.html').read_bytes()
-    checks.append({'path':path,'redirectsTo':url,'status':status})
-    print(f'PASS {path}: redirects to homepage',flush=True)
+    assert status==404,(path,status,url)
+    assert data==(ROOT/'workingholidayage/404.html').read_bytes()
+    checks.append({'path':path,'status':status,'japaneseVersionRemoved':True})
+    print(f'PASS {path}: Japanese version removed, HTTP 404',flush=True)
 result={'base':BASE,'checkedAt':datetime.datetime.now(datetime.timezone.utc).isoformat(),'checks':checks}
 (ROOT/'qa').mkdir(exist_ok=True)
 (ROOT/'qa/workingholidayage-live.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n')

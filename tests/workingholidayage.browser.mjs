@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 const require=createRequire(`${process.env.WHA_QA_MODULE_ROOT || '/tmp/wha-browser-qa/node_modules'}/package.json`);
 const {chromium,webkit,devices}=require('playwright');
 const axePath=require.resolve('axe-core/axe.min.js');
-const base=(process.env.WHA_QA_URL||'http://127.0.0.1:4173').replace(/\/$/,'');
+const base=(process.env.WHA_QA_URL||'http://127.0.0.1:4174').replace(/\/$/,'');
 const out=process.env.WHA_QA_OUTPUT||'/tmp/wha-qa-report';
 await mkdir(out,{recursive:true});
 const reports=[];
@@ -80,7 +80,10 @@ for(const [name,engine,device] of [['chromium',chromium,devices['Pixel 7']],['we
    const response=await page.goto(base+path,{waitUntil:'domcontentloaded'});assert.equal(response.status(),path.includes('nonexistent')?404:200);
    await noOverflow(page,`${name} ${path}`);await access(page,`${name} ${path}`);
   }
-  const ja=await context.request.get(base+'/ja/',{maxRedirects:0});assert.equal(ja.status(),301);assert.equal(new URL(ja.headers().location,base).pathname,'/');
+  for(const path of ['/ja','/ja/','/ja/old-page']){
+   const ja=await context.request.get(base+path,{maxRedirects:0});assert.equal(ja.status(),404);
+   assert.match(await ja.text(),/페이지를 찾을 수 없습니다/);
+  }
   const robots=await context.request.get(base+'/robots.txt');assert.match(await robots.text(),/^User-agent:/);
   const sitemap=await context.request.get(base+'/sitemap.xml');assert.match(await sitemap.text(),/<urlset/);assert.doesNotMatch(await sitemap.text(),/\/ja\//);
   const adstxt=await context.request.get(base+'/ads.txt');assert.match(await adstxt.text(),/pub-1671879642075474/);
