@@ -7,7 +7,7 @@
 <meta name="google-adsense-account" content="ca-pub-1671879642075474">
 <meta name="google-site-verification" content="iC_Hz0tgbMb7wFPyy37G4ALpYx8uXDRGfheh7SjcCv8" />
 <meta name="naver-site-verification" content="d6987b80de0e8dab9603e7bb3f333be21f05bd2b" />
-<meta name="description" content="워홀 나이 계산기는 생년월일을 입력하면 만 나이를 자동으로 계산하여 캐나다 워홀, 호주 워홀, 일본 워홀 등 29개국의 워킹홀리데이 신청 가능 여부와 나이 제한까지 남은 기간(D-day)을 한눈에 확인할 수 있습니다.">
+<meta name="description" content="대한민국 국적자를 위한 워킹홀리데이 연령 조건 비교 도구. 생년월일로 만 나이와 연령 기준 D-day를 계산하고, 국가별 공식 출처와 일본의 연령 예외를 확인하세요.">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>워홀 나이 계산기 | 국가별 워킹홀리데이 신청 나이 확인</title>
@@ -40,7 +40,7 @@
   --text: #222;
   --heading: #193153;
   --muted: #666;
-  --subtle: #777;
+  --subtle: #666;
   --border: #e5e5e5;
   --blue-border: #cfe0ff;
   --hover-border: #bbb;
@@ -443,6 +443,8 @@
 }
 
 .search-hero h1 {
+  word-break: keep-all;
+  overflow-wrap: break-word;
   font-size: 30px;
   line-height: 1.4;
   margin: 0 0 14px;
@@ -584,7 +586,7 @@
   font-size: 26px;
   font-weight: bold;
   color: var(--heading);
-  var(--surface)-space: nowrap;
+  white-space: nowrap;
 }
 
 .row-countdown-label {
@@ -737,7 +739,7 @@
 }
 
 .age-country-stay > span {
-  var(--surface)-space: nowrap;
+  white-space: nowrap;
 }
 
 /* 태블릿에서는 국가 카드의 가로 공간을 확보합니다. */
@@ -781,7 +783,8 @@
 }
 
 .stay-badge:hover {
-  background: var(--blue-border);
+  background: var(--soft-blue);
+  text-decoration: underline;
 }
 
 .stay-badge:focus-visible {
@@ -873,14 +876,8 @@
     font-size: 20px;
   }
 }
-/* 지도 이동은 유지하고 가로 스크롤바만 숨김 */
-.map-scroll {
-  scrollbar-width: none;
-}
-
-.map-scroll::-webkit-scrollbar {
-  display: none;
-}
+/* 지도는 원래 비율을 유지하며 스크롤 가능성을 표시합니다. */
+.map-scroll { scrollbar-width: auto; }
   .header-inner{max-width:920px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
   
 /* 연령별 대분류 → 대륙별 중분류: 스크롤을 줄이는 간결한 결과 화면 */
@@ -1076,7 +1073,7 @@
   font-size: 13px;
   line-height: 1.5;
 }
-.canada-intro-facts b { color: var(--link); font-weight: 700; var(--surface)-space: nowrap; }
+.canada-intro-facts b { color: var(--link); font-weight: 700; white-space: nowrap; }
 .canada-intro-facts span { overflow-wrap: anywhere; }
 .canada-country-intro p {
   margin: 0 0 12px;
@@ -1100,8 +1097,8 @@
 
 /* 모든 국가: 국가 소개 → 블로그 상세정보 → 연령 계산 결과 */
 .map-section .calculator > .selected-country,
-.map-section .calculator > .age-rule,
 .map-section .calculator > .result-info { display: none; }
+.map-section .calculator > .age-rule { margin: 0 0 16px; line-height: 1.7; }
 .map-section .calculator > .canada-country-intro {
   margin: 0 0 20px;
   padding: 0 0 18px;
@@ -1219,10 +1216,36 @@
 }
 .theme-toggle:focus-visible { outline: 3px solid var(--link); outline-offset: 3px; }
 a { color: var(--link); }
+
+[hidden] { display: none !important; }
+.country-result-select { display: block; margin: 0; padding: 0; background: transparent; color: var(--text); border: 0; border-radius: 2px; text-align: left; font-family: inherit; line-height: inherit; }
+.country-result-select:hover { opacity: 1; }
+.country-result-select:focus-visible { outline: 3px solid var(--link); outline-offset: 3px; }
+.scope-note, .source-note { font-size: 13px; line-height: 1.75; color: var(--muted); overflow-wrap: anywhere; }
+.source-note { text-align: left; margin: 16px 0 0; }
+.quick-links, .footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 20px; font-size: 14px; }
+.quick-links a, .footer-links a { padding: 8px 0; }
+.content-section { max-width: 920px; margin: 30px auto 0; padding: 24px; text-align: left; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; line-height: 1.8; }
+.content-section h2 { margin: 0 0 12px; font-size: 21px; }
+.content-section h3 { font-size: 17px; }
+.content-section p { color: var(--muted); }
+.content-section li { margin: 8px 0; }
+.content-section summary { cursor: pointer; font-weight: bold; padding: 12px 0; }
+.content-section details + details { border-top: 1px solid var(--border); }
+.input-error { color: #b42318; font-size: 14px; text-align: left; }
+:root[data-theme="dark"] .input-error { color: #fda4af; }
+.input-error:empty { display: none; }
+#countryPicker { max-width: 100%; min-height: 44px; margin: 0 0 14px; color: var(--text); }
+.visually-hidden, .skip-link { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.skip-link:focus { position: fixed; top: 8px; left: 8px; width: auto; height: auto; clip-path: none; padding: 12px; background: var(--surface); z-index: 10; }
+a:focus-visible, select:focus-visible, summary:focus-visible { outline: 3px solid var(--link); outline-offset: 3px; }
+@media (max-width: 600px) { .content-section { padding: 18px 16px; } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; } }
 </style>
 </head>
 
 <body>
+<a class="skip-link" href="#main">계산기로 바로가기</a>
 
 <header>
   <div class="header-inner">
@@ -1238,8 +1261,8 @@ a { color: var(--link); }
   function updateToggle() {
     const dark = document.documentElement.dataset.theme === "dark";
     toggle.textContent = dark ? "☀️ 화이트 모드" : "🌙 다크 모드";
-    toggle.setAttribute("aria-label", "다크 모드");
-    toggle.setAttribute("aria-pressed", String(dark));
+    toggle.removeAttribute("aria-label");
+    toggle.removeAttribute("aria-pressed");
     toggle.title = dark ? "화이트 모드로 전환" : "다크 모드로 전환";
   }
   toggle.addEventListener("click", () => {
@@ -1260,44 +1283,48 @@ a { color: var(--link); }
 </script>
 
 
-<main class="container">
+<main class="container" id="main" tabindex="-1">
 
   <!-- 전체 국가 검색 -->
-  <section class="search-hero">
+  <section class="search-hero" id="calculator" aria-labelledby="calculatorTitle">
     <div class="hero-brand">🌐 WORKING HOLIDAY</div>
 
-    <h1>내 나이로 워홀 가능한 나라는?</h1>
+    <h1 id="calculatorTitle">내 나이로 워홀 가능한 나라는?</h1>
 
     <p class="hero-description">
-      생년월일을 입력하고 가능한 국가를 한 번에 확인하세요.
+      생년월일로 국가별 워킹홀리데이 연령 조건을 비교하세요.
     </p>
 
-    <div class="birth-panel">
-      <div class="birth-label">생년월일</div>
+    <p class="scope-note">대한민국 국적자 기준 · 나이 조건만 비교하며 비자 발급이나 모집 여부를 판정하지 않습니다.</p>
+    <form class="birth-panel" id="birthForm" novalidate>
+      <div class="birth-label" id="birthLabel">생년월일</div>
 
-      <div class="birth-fields">
-        <select id="year" aria-label="태어난 연도">
-          <option value="">태어난 연도</option>
+      <div class="birth-fields" role="group" aria-labelledby="birthLabel" aria-describedby="birthHelp birthError">
+        <select id="year" aria-label="태어난 연도" aria-describedby="birthHelp birthError">
+          <option value="">연도</option>
         </select>
 
-        <select id="month" aria-label="태어난 월">
+        <select id="month" aria-label="태어난 월" aria-describedby="birthHelp birthError">
           <option value="">월</option>
         </select>
 
-        <select id="day" aria-label="태어난 일">
+        <select id="day" aria-label="태어난 일" aria-describedby="birthHelp birthError">
           <option value="">일</option>
         </select>
       </div>
 
       <button
         class="search-button"
-        type="button"
-        onclick="findEligibleCountries()"
+        type="submit"
       >
-        워홀 가능 국가 한 번에 찾기 →
+        워홀 연령 조건 비교하기 →
       </button>
-    </div>
+      <p id="birthError" class="input-error" role="alert"></p>
+      <p id="birthHelp" class="scope-note">생년월일은 이 브라우저에서 계산에만 사용하며 저장하거나 전송하지 않습니다.</p>
+    </form>
+    <nav class="quick-links" aria-label="이용 안내"><a href="#how-it-works">계산 방법</a><a href="#sources">공식 출처</a><a href="#faq">자주 묻는 질문</a></nav>
   </section>
+  <noscript><p class="content-section">계산 기능에는 JavaScript가 필요합니다. 아래 계산 방법과 공식 출처는 JavaScript 없이도 읽을 수 있습니다.</p></noscript>
 
   <!-- 전체 검색 결과 -->
   <div id="allCountriesResult" aria-live="polite"></div>
@@ -1308,14 +1335,16 @@ a { color: var(--link); }
 
     <p class="map-guide">
       관심 있는 국가를 선택하면 해당 국가의 워홀 연령 조건을
-      확인할 수 있습니다.
+      확인할 수 있습니다. 지도는 좌우로 밀어 볼 수 있으며, 아래 국가 선택 목록으로도 선택할 수 있습니다.
     </p>
+    <label for="countryPicker" class="visually-hidden">확인할 국가·지역 선택</label>
+    <select id="countryPicker" aria-label="확인할 국가·지역 선택"></select>
 
-    <div class="map-scroll">
+    <div class="map-scroll" tabindex="0" role="region" aria-label="국가 위치 지도, 좌우로 스크롤할 수 있습니다">
       <div class="world-map">
         <img
           class="world-map-image"
-          src="working-map_2026.jpg"
+          src="/working-map_2026.jpg"
           alt="워킹홀리데이 국가 위치 지도"
           width="920"
           height="377"
@@ -1351,15 +1380,15 @@ a { color: var(--link); }
             <div><b>수도</b><span>오타와 (Ottawa)</span></div>
             <div><b>언어</b><span>영어, 프랑스어</span></div>
           </div>
-          <p>캐나다는 한국전 당시 2만 7천여 명의 병력을 파견한 3대 참전국이자, 민주주의·자유·인권 등의 가치를 공유하는 전통 우방국입니다. 우리나라 재외동포가 25만여 명으로 미국, 중국, 일본에 이어 네 번째로 많은 나라이기도 합니다.</p>
-          <p>한국과 캐나다는 1963년 수교하여 2014년 자유무역협정(FTA)을 체결하였고, 2022년 양국 정상회담을 계기로 ‘포괄적 전략적 동반자 관계’가 되었습니다. 양국의 인적 교류도 크게 성장하여 기존 4천 명 규모이던 워킹홀리데이가 2024년부터 1만 2천 명 규모의 청년교류프로그램으로 확대·개편되었습니다.</p>
+          <p>캐나다는 북아메리카에 위치하며 영어와 프랑스어를 공용어로 사용합니다. 연령 조건을 확인한 뒤에는 이민국의 모집 일정과 신청 절차를 함께 확인하세요.</p>
+          <p>계산 결과의 D-day는 연령 기준에 따른 참고 날짜입니다. 모집 인원, 초청 여부와 서류 제출 기한은 이 계산에 포함되지 않습니다.</p>
         </section>
 
       <div id="result" aria-live="polite"></div>
       <!-- 국가를 선택하면 해당 국가의 Blogger 상세정보 링크를 표시 -->
       <aside id="countryGuideLink" class="country-guide-link" aria-label="국가별 워킹홀리데이 상세정보">
         <strong id="countryGuideTitle">캐나다 워킹홀리데이 상세 가이드</strong>
-        <p id="countryGuideDescription">신청 조건 · 준비 서류 · 현지 생활</p>
+        <p id="countryGuideDescription">외부 블로그의 추가 설명 · 공식 기준은 아래 출처에서 확인</p>
         <a id="countryGuideAnchor" href="https://helloworkingholiday.blogspot.com/2026/10/blog-post.html" target="_blank" rel="noopener noreferrer">자세히 알아보기 ↗</a>
 
       </aside>
@@ -1687,18 +1716,45 @@ a { color: var(--link); }
     </div>
   </section>
 
+
+  <section class="content-section" id="how-it-works" aria-labelledby="howTitle">
+    <h2 id="howTitle">이 계산기는 어떻게 계산하나요?</h2>
+    <ol>
+      <li>생년월일을 선택하면 기기의 오늘 날짜를 기준으로 만 나이를 계산합니다. 올해 생일이 지나지 않았다면 한 살을 뺍니다.</li>
+      <li>대한민국 국적자에게 적용되는 등록 연령 범위와 비교합니다. 현재 모집 여부, 초청, 자금·학력·건강·이전 참여 이력은 판정하지 않습니다.</li>
+      <li>상한 연령의 다음 생일 전날을 ‘연령 기준 마지막 날짜’로 계산합니다. 예를 들어 만 30세까지인 기준에서는 31번째 생일 전날입니다. D-0은 그 날짜가 오늘이라는 뜻입니다.</li>
+    </ol>
+    <p>날짜 차이는 시간과 일광절약시간의 영향을 줄이도록 날짜 단위로 계산합니다. 2월 29일생의 생일은 해당 연도에 2월 29일이 없으면 3월 1일로 처리합니다. 국가별 법적 연령 판단 방식과 접수 시각·시간대가 다를 수 있으니 생일 직전 신청은 반드시 담당 기관에 확인하세요.</p>
+    <p>기기 날짜가 틀리면 결과도 달라집니다. 신청 예정일이나 입국일을 기준으로 한 계산이 아니며, 공식 기관의 자격 심사를 대신하지 않습니다.</p>
+  </section>
+  <section class="content-section" id="sources" aria-labelledby="sourcesTitle">
+    <h2 id="sourcesTitle">계산 기준과 공식 정보 출처</h2>
+    <p>연령 범위와 핀란드의 예정 상태는 <a href="https://whic.mofa.go.kr/whic/about/working.jsp" target="_blank" rel="noopener noreferrer">재외동포청 워킹홀리데이 안내표</a>와 2026년 10월 26일 대조했습니다. 이는 이 사이트의 확인일이며 원문 발표일이나 실시간 갱신을 뜻하지 않습니다.</p>
+    <p>일본의 기본 연령과 예외·재참여 안내는 <a href="https://www.kr.emb-japan.go.jp/itpr_ko/visa_working.html" target="_blank" rel="noopener noreferrer">주대한민국일본국대사관의 Working Holiday 사증 안내</a>를 참고합니다. 일반 국가 소개와 외부 블로그는 비자 자격의 공식 근거가 아닙니다.</p>
+    <p>신청 전 <a href="https://whic.mofa.go.kr/whic/nation/info.jsp" target="_blank" rel="noopener noreferrer">국가·지역별 안내</a>에서 목적지를 선택하고, 연결된 대사관·이민국에서 접수 기간, 연령 판단 시점, 제출 서류, 체류·연장 조건을 확인하세요. 안내가 서로 다르면 해당 비자 발급 기관의 최신 공지를 우선 확인하세요.</p>
+  </section>
+  <section class="content-section" id="faq" aria-labelledby="faqTitle">
+    <h2 id="faqTitle">자주 묻는 질문</h2>
+    <details><summary>D-day까지 기다렸다가 신청해도 되나요?</summary><p>D-day는 나이만으로 계산한 참고 값입니다. 실제 모집은 더 일찍 끝날 수 있고, 초청이나 서류 제출 기한이 따로 있을 수 있습니다. 공식 모집 일정을 먼저 확인하세요.</p></details>
+    <details><summary>연령 기준을 충족하면 비자가 나오나요?</summary><p>연령 외에도 국가별 요건과 심사가 있습니다. 이 도구는 연령 조건을 비교할 뿐 신청 가능 여부 전체나 발급 결과를 확정하지 않습니다.</p></details>
+    <details><summary>일본은 왜 만 25세까지만 기본 목록에 나오나요?</summary><p>일본의 원칙적 연령을 적용하기 때문입니다. 만 26~30세는 부득이한 사정이 인정되는 예외가 있으므로, 자동 결과만 보고 포기하거나 신청 가능하다고 판단하지 말고 일본대사관 안내를 확인하세요.</p></details>
+    <details><summary>국가가 목록에 없거나 결과가 0개이면 어떻게 하나요?</summary><p>기본 연령 범위와 예정 상태에 따른 결과입니다. 생년월일과 국가 선택을 다시 확인하고, 공식 안내의 예외·변경 사항을 살펴보세요. 결과 0개가 모든 해외 체류 방법이 없다는 뜻은 아닙니다.</p></details>
+    <details><summary>생년월일을 저장하나요?</summary><p>계산용 생년월일은 현재 페이지의 메모리에서만 사용합니다. URL에 넣거나 서버로 보내거나 브라우저 저장소에 보관하지 않습니다. 테마 선택과 외부 리소스 요청은 <a href="/privacy/">개인정보처리방침</a>에서 설명합니다.</p></details>
+  </section>
+
 </main>
 
 
 <footer>
-  © <span id="footerYear"></span> 워홀 나이 계산기
+  <nav class="footer-links" aria-label="사이트 정보"><a href="/about/">사이트 소개·운영 안내</a><a href="/privacy/">개인정보처리방침</a><a href="/contact/">문의·정보 정정</a></nav>
+  <p>© <span id="footerYear"></span> 워홀 나이 계산기 · 정부기관이 운영하는 서비스가 아닙니다.</p>
 </footer>
 
 
 
 
 <script>
-  // 보내준 재외동포청 표의 연령 기준
+  // 연령: https://whic.mofa.go.kr/whic/about/working.jsp (2026-10-26 확인)
   // 국가를 추가하거나 수정할 때는 이 목록을 수정하면 됩니다.
   const countries = {
     canada:      { name: "캐나다",       flag: "🇨🇦", minAge: 18, maxAge: 35 },
@@ -1816,6 +1872,14 @@ const stayPeriods = {
     taiwan: 'https://helloworkingholiday.blogspot.com/2026/10/blog-post_375.html'
   };
 
+  const SOURCE_URL = "https://whic.mofa.go.kr/whic/about/working.jsp";
+  const JAPAN_URL = "https://www.kr.emb-japan.go.jp/itpr_ko/visa_working.html";
+  function sourceNote(code) {
+    return `<p class="source-note">연령 자료: <a href="${SOURCE_URL}" target="_blank" rel="noopener noreferrer">재외동포청 워킹홀리데이 안내표</a> · 확인일 2026년 10월 26일${code === "japan" ? ` · <a href="${JAPAN_URL}" target="_blank" rel="noopener noreferrer">일본대사관 연령·예외 안내</a>` : ""}<br>신청 전에는 <a href="https://whic.mofa.go.kr/whic/nation/info.jsp" target="_blank" rel="noopener noreferrer">국가·지역별 공식 안내</a>에서 해당 국가를 선택해 최신 조건을 확인하세요.</p>`;
+  }
+  function japanException(age) {
+    return age >= 26 && age <= 30 ? `<p class="results-notice">일본은 기본 연령 목록에서 제외했지만, 만 26~30세도 부득이한 사정이 인정되면 신청 가능한 예외가 있습니다. 예외 인정 여부는 자동 판정하지 않습니다. <a href="${JAPAN_URL}" target="_blank" rel="noopener noreferrer">일본대사관 공식 조건 확인</a></p>` : "";
+  }
   let selectedCountry = "canada";
 
   const countryList = document.getElementById("countryList");
@@ -1824,6 +1888,15 @@ const stayPeriods = {
   const daySelect = document.getElementById("day");
   const result = document.getElementById("result");
 
+  const countryPicker = document.getElementById("countryPicker");
+  Object.entries(countries).forEach(([code, country]) => {
+    countryPicker.add(new Option(country.name + (country.pending ? " (발효 예정)" : ""), code));
+  });
+  countryPicker.addEventListener("change", () => selectCountry(countryPicker.value));
+  document.getElementById("birthForm").addEventListener("submit", event => {
+    event.preventDefault();
+    findEligibleCountries();
+  });
   // 국가 선택 카드를 자동 생성합니다.
 // 지도 사진 속 국가 이름표의 위치입니다.
 // 배열 순서: 왼쪽 위치, 위쪽 위치, 너비, 높이
@@ -1886,7 +1959,7 @@ Object.entries(countries).forEach(([code, country]) => {
   card.style.height = height + "px";
 
   const label = country.pending
-    ? country.name + " 선택 — 제공된 표 기준 발효 예정"
+    ? country.name + " 선택 — 공식 안내표 기준 발효 예정"
     : country.name + " 선택";
 
   card.setAttribute("aria-label", label);
@@ -1903,7 +1976,9 @@ Object.entries(countries).forEach(([code, country]) => {
 
   // 선택 국가를 변경합니다.
   function selectCountry(code) {
+    if (!countries[code]) return;
     selectedCountry = code;
+    countryPicker.value = code;
 
     const country = countries[code];
     const guideUrl = countryGuideUrls[code];
@@ -1923,7 +1998,7 @@ Object.entries(countries).forEach(([code, country]) => {
     if (guideUrl) {
       document.getElementById("countryGuideTitle").textContent = `${country.name} 워킹홀리데이 상세 가이드`;
       document.getElementById("countryGuideDescription").textContent =
-        `신청 조건 · 준비 서류 · 현지 생활`;
+        `외부 블로그의 추가 설명 · 공식 기준은 아래 출처에서 확인`;
       const guideAnchor = document.getElementById("countryGuideAnchor");
       guideAnchor.href = guideUrl;
       guideAnchor.textContent = `자세히 알아보기 ↗`;
@@ -1942,11 +2017,11 @@ Object.entries(countries).forEach(([code, country]) => {
       `대한민국 국적자 기준 만 ${country.minAge}세 ~ 만 ${country.maxAge}세`;
 
     if (code === "japan") {
-      rule += " · 표에 별도 주석(**)이 있으므로 상세 조건 확인 필요";
+      rule += " (원칙) · 부득이한 사정 인정 시 만 30세까지";
     }
 
     if (country.pending) {
-      rule += " · 제공된 표 기준 발효 예정";
+      rule += " · 공식 안내표 기준 발효 예정";
     }
 
     document.getElementById("ageRule").textContent = rule;
@@ -1956,12 +2031,12 @@ Object.entries(countries).forEach(([code, country]) => {
       calculateAge();
     } else {
       result.style.display = "block";
-      result.innerHTML = '<p class="result-info">위에서 생년월일을 입력하면 선택한 국가의 결과가 바로 표시됩니다.</p>';
+      result.innerHTML = `<p class="result-info">위에서 생년월일을 입력하면 선택한 국가의 결과가 표시됩니다.</p>${sourceNote(code)}`;
     }
   }
 
   // 연도·월 목록을 생성합니다.
-  yearSelect.innerHTML = '<option value="">태어난 연도</option>';
+  yearSelect.innerHTML = '<option value="">연도</option>';
   monthSelect.innerHTML = '<option value="">월</option>';
   const currentYear = new Date().getFullYear();
 
@@ -1997,7 +2072,8 @@ Object.entries(countries).forEach(([code, country]) => {
  function clearResult() {
   result.style.display = "none";
   result.innerHTML = "";
-
+  document.getElementById("birthError").textContent = "";
+  [yearSelect, monthSelect, daySelect].forEach(field => field.removeAttribute("aria-invalid"));
   document.getElementById("allCountriesResult").innerHTML = "";
   }
 
@@ -2052,6 +2128,12 @@ function remainingAgeText(lastDate) {
     return new Date(year + age, month - 1, day);
   }
 
+  function birthError(message, field) {
+    document.getElementById("birthError").textContent = message;
+    field.setAttribute("aria-invalid", "true");
+    field.focus();
+    return null;
+  }
   // 두 계산기가 공통으로 사용하는 생년월일 검사와 만 나이 계산
   function readBirthInfo() {
     const year = Number(yearSelect.value);
@@ -2059,8 +2141,7 @@ function remainingAgeText(lastDate) {
     const day = Number(daySelect.value);
 
     if (!year || !month || !day) {
-      alert("생년월일을 모두 선택해주세요.");
-      return null;
+      return birthError("생년월일을 모두 선택해주세요.", [yearSelect, monthSelect, daySelect].find(field => !field.value));
     }
 
     const birthDate = new Date(year, month - 1, day);
@@ -2072,15 +2153,15 @@ function remainingAgeText(lastDate) {
       birthDate.getMonth() !== month - 1 ||
       birthDate.getDate() !== day
     ) {
-      alert("올바른 날짜를 선택해주세요.");
-      return null;
+      return birthError("올바른 날짜를 선택해주세요.", daySelect);
     }
 
     if (birthDate > today) {
-      alert("생년월일이 현재 날짜보다 미래일 수 없습니다.");
-      return null;
+      return birthError("생년월일이 현재 날짜보다 미래일 수 없습니다.", yearSelect);
     }
 
+    document.getElementById("birthError").textContent = "";
+    [yearSelect, monthSelect, daySelect].forEach(field => field.removeAttribute("aria-invalid"));
     let age = today.getFullYear() - year;
 
     if (
@@ -2101,12 +2182,13 @@ function remainingAgeText(lastDate) {
       result.innerHTML = `
         <div class="result-title">🟡 발효 예정</div>
         <div class="result-info">
-          제공된 표에서 ${country.name}은 발효 예정으로 표시되어 있습니다.
+          공식 안내표에서 ${country.name}은 발효 예정으로 표시되어 있습니다.
           <br><br>
           표의 예정 연령 기준은 만 ${country.minAge}세 ~ 만 ${country.maxAge}세입니다.
           <br>
-          신청 개시 여부를 확인한 뒤 이용해주세요.
+          신청 개시 여부를 공식 기관에서 확인해주세요.
         </div>
+        ${sourceNote(selectedCountry)}
       `;
       return;
     }
@@ -2127,9 +2209,7 @@ function remainingAgeText(lastDate) {
     lastAgeEligibleDate.setDate(lastAgeEligibleDate.getDate() - 1);
 
     const japanNote = selectedCountry === "japan"
-      ? `<br><br>※ 일본은 제공된 표에 별도 주석(**)이 있습니다.
-         사진에 주석 내용이 없어 이 계산에는 만 25세 기준만 반영했습니다.
-         상세 조건은 별도로 확인해주세요.`
+      ? `<br><br>※ 일본은 원칙적으로 만 18~25세이며, 부득이한 사정이 인정되는 경우 만 30세까지 신청할 수 있습니다. 이 계산은 기본 상한 만 25세를 적용하며 예외 인정 여부는 판정하지 않습니다. <a href="${JAPAN_URL}" target="_blank" rel="noopener noreferrer">공식 예외 조건 확인</a>`
       : "";
 
     const notice = `
@@ -2138,7 +2218,9 @@ function remainingAgeText(lastDate) {
         실제 모집기간이나 비자 신청 마감일이 아닙니다.
         국가별 연령 판단 시점과 기타 자격요건을 확인해주세요.
         ${japanNote}
+        <br>계산 기준일: ${formatDate(today)} · 기기 현지 날짜 기준
       </div>
+      ${sourceNote(selectedCountry)}
     `;
 
     result.style.display = "block";
@@ -2193,7 +2275,7 @@ function remainingAgeText(lastDate) {
       `;
     } else {
       result.innerHTML = `
-        <div class="result-title">🔴 연령 기준 초과</div>
+        <div class="result-title">${selectedCountry === "japan" && age <= 30 ? "🟡 기본 연령 초과 · 예외 확인 필요" : "🔴 연령 기준 초과"}</div>
         <div class="result-info">
           현재 만 <strong>${age}세</strong>입니다.
           <br>
@@ -2228,7 +2310,9 @@ function scrollToSelectedCountryDetails() {
   const scrollTop = contentHeight <= viewportHeight - 32
     ? introTop - (viewportHeight - contentHeight) / 2
     : absoluteTop(target) - viewportHeight * 0.42;
-  window.scrollTo({ top: Math.max(0, scrollTop), behavior: "smooth" });
+  target.setAttribute("tabindex", "-1");
+  target.focus({ preventScroll: true });
+  window.scrollTo({ top: Math.max(0, scrollTop), behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
 }
 
 function jumpToCountryOnMap(code) {
@@ -2240,11 +2324,13 @@ function jumpToCountryOnMap(code) {
 // 동적으로 생성된 검색 결과 카드의 클릭과 키보드 조작을 지원합니다.
 const allCountriesResult = document.getElementById("allCountriesResult");
 allCountriesResult.addEventListener("click", event => {
+  if (event.target.closest("details, summary, a")) return;
   const card = event.target.closest("[data-country-code]");
   if (card) jumpToCountryOnMap(card.dataset.countryCode);
 });
 allCountriesResult.addEventListener("keydown", event => {
   if (event.key !== "Enter" && event.key !== " ") return;
+  if (event.target.closest("details, summary, a, button")) return;
   const card = event.target.closest("[data-country-code]");
   if (!card) return;
   event.preventDefault();
@@ -2306,12 +2392,11 @@ function findEligibleCountries() {
       .map(letter => String.fromCharCode(letter.codePointAt(0) - 127397))
       .join("").toLowerCase();
     return `
-      <div class="age-country-card" role="button" tabindex="0"
-           data-country-code="${code}" aria-label="${country.name} 지도에서 확인하기">
+      <div class="age-country-card" data-country-code="${code}">
         <img class="age-country-flag" src="https://flagcdn.com/${flagCode}.svg"
              alt="${country.name} 국기" width="30" height="23">
         <div class="age-country-info">
-          <div class="age-country-name">${country.name}</div>
+          <button type="button" class="age-country-name country-result-select" title="${country.name} 상세 연령 결과 보기">${country.name}</button>
           <div class="age-country-stay">
             <span>${stayPeriods[code]?.text || "체류 기간 확인 중"}</span>
             ${stayPeriods[code]?.badge ? `
@@ -2380,18 +2465,12 @@ function findEligibleCountries() {
 
     ${eligibleCountries.length
       ? groupsHTML
-      : `<p class="result-info">
-           현재 등록된 기준으로 연령을 충족하는 국가가 없습니다.
-         </p>`
+      : `<p class="result-info">현재 등록된 기본 연령 기준을 충족하는 국가·지역이 없습니다. 생년월일을 확인하고, 아래 공식 안내에서 예외 조건이나 제도 변경 여부를 확인하세요.</p>`
     }
 
-    <div class="results-notice">
-      ※ D-day는 연령 기준으로 계산한 날짜이며, 실제 비자 신청 마감일과 다를 수 있습니다.
-
-  <div style="margin-top: 12px;">
-    자료 출처: 재외동포청 워킹홀리데이 관련 안내자료
-  </div>
-</div>
+    ${japanException(age)}
+    <p class="results-notice">※ D-day는 연령 기준 참고 날짜이며 실제 모집·접수 마감일이 아닙니다. 핀란드는 공식 안내표의 발효 예정 상태에 따라 목록에서 제외했습니다. 체류 기간은 조건부 연장 여부에 따라 달라질 수 있으므로 공식 안내를 확인하세요.<br>계산 기준일: ${formatDate(today)} · 기기 현지 날짜 기준</p>
+    ${sourceNote()}
   `;
 
   // 전체 국가 결과를 계산한 뒤, 지도 결과의 기본 국가를 캐나다로 표시합니다.

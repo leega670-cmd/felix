@@ -1,0 +1,2407 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+
+
+<meta name="naver-site-verification" content="0ae6994085327f728ce96934dbfb78400b3a400c" />
+<meta name="google-adsense-account" content="ca-pub-1671879642075474">
+<meta name="google-site-verification" content="iC_Hz0tgbMb7wFPyy37G4ALpYx8uXDRGfheh7SjcCv8" />
+<meta name="naver-site-verification" content="d6987b80de0e8dab9603e7bb3f333be21f05bd2b" />
+<meta name="description" content="워홀 나이 계산기는 생년월일을 입력하면 만 나이를 자동으로 계산하여 캐나다 워홀, 호주 워홀, 일본 워홀 등 29개국의 워킹홀리데이 신청 가능 여부와 나이 제한까지 남은 기간(D-day)을 한눈에 확인할 수 있습니다.">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>워홀 나이 계산기 | 국가별 워킹홀리데이 신청 나이 확인</title>
+<link rel="icon" href="/favicon.png" type="image/png">
+<link rel="canonical" href="https://workingholidayage.com/">
+
+  <script>
+    // Apply the saved preference before the page is painted.
+    (() => {
+      let savedTheme;
+      try { savedTheme = localStorage.getItem("workingholidayage-theme"); } catch (_) {}
+      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)");
+      const hasSavedTheme = savedTheme === "light" || savedTheme === "dark";
+      document.documentElement.dataset.theme = hasSavedTheme
+        ? savedTheme : (systemTheme.matches ? "dark" : "light");
+      window.workingHolidayTheme = { systemTheme, manual: hasSavedTheme };
+    })();
+  </script>
+  <style>
+:root {
+  color-scheme: light;
+  --on-button: #fff;
+  --primary-button: #2563eb;
+  --neutral-button: #222;
+  --page: #f5f6f8;
+  --surface: white;
+  --panel: #f7f7f7;
+  --soft-blue: #eff5ff;
+  --blue-hover: #dbeafe;
+  --text: #222;
+  --heading: #193153;
+  --muted: #666;
+  --subtle: #777;
+  --border: #e5e5e5;
+  --blue-border: #cfe0ff;
+  --hover-border: #bbb;
+  --link: #2563eb;
+  --success-bg: #eaf8f0;
+  --success-border: #d5ebdd;
+  --success-label: #286947;
+  --success: #087d43;
+  --gradient-start: #f0f6ff;
+  --gradient-end: #f8fbff;
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #111827;
+  --surface: #1f2937;
+  --panel: #182233;
+  --soft-blue: #1b2e4a;
+  --blue-hover: #28446b;
+  --text: #f1f5f9;
+  --heading: #dbeafe;
+  --muted: #b9c6d8;
+  --subtle: #a5b3c7;
+  --border: #42516a;
+  --blue-border: #45658e;
+  --hover-border: #94a3b8;
+  --link: #93c5fd;
+  --success-bg: #153b2c;
+  --success-border: #35634d;
+  --success-label: #a7dfbb;
+  --success: #6ee7a0;
+  --gradient-start: #1b2e4a;
+  --gradient-end: #1f2937;
+}
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: var(--page);
+      color: var(--text);
+    }
+
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 20px;
+    }
+
+    .header-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 50px auto;
+      padding: 0 20px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 34px;
+      margin-bottom: 12px;
+    }
+
+    .description {
+      color: var(--muted);
+      margin-bottom: 35px;
+      line-height: 1.6;
+    }
+
+    /* 국가 선택 */
+
+    .country-title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+
+    .country-list {
+      display: grid;
+      grid-template-columns: repeat(8, minmax(0, 1fr));
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .country-card {
+      background: var(--surface);
+      border: 2px solid transparent;
+      border-radius: 14px;
+      padding: 20px 10px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .country-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--hover-border);
+    }
+
+    .country-card.active {
+      border-color: var(--text);
+    }
+
+    .country-flag {
+      display: block;
+      width: 48px;
+      height: 36px;
+      object-fit: contain;
+      margin: 0 auto 8px;
+    }
+
+    .country-name {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    /* 계산기 */
+
+    .calculator {
+      max-width: 760px;
+      margin: 0 auto;
+      background: var(--surface);
+      padding: 40px 30px;
+      border-radius: 15px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+    }
+
+    .selected-country {
+      font-size: 28px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .age-rule {
+      color: var(--muted);
+      margin-bottom: 30px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 12px;
+      font-weight: bold;
+    }
+
+    .date-inputs {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 7px;
+      flex-wrap: wrap;
+    }
+
+    select {
+      padding: 12px 8px;
+      font-size: 16px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface);
+    }
+
+    #year { width: 110px; }
+
+    #month,
+    #day { width: 75px; }
+
+    button {
+      margin-top: 25px;
+      padding: 14px 35px;
+      border: none;
+      border-radius: 8px;
+      background: var(--neutral-button);
+      color: var(--on-button);
+      font-size: 17px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      opacity: 0.85;
+    }
+
+    #result {
+      margin-top: 30px;
+      padding: 25px;
+      background: var(--page);
+      border-radius: 10px;
+      display: none;
+    }
+
+    .result-title {
+      font-size: 26px;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+
+    .result-info {
+      line-height: 1.8;
+      color: var(--muted);
+    }
+
+    .deadline {
+      margin-top: 20px;
+      margin-bottom: 20px;
+      padding: 18px;
+      background: var(--surface);
+      border-radius: 8px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    /* 4차 개선: 선택 국가의 연령 결과 */
+    .deadline-overview {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      gap: 14px;
+      align-items: center;
+      background: var(--success-bg);
+      border: 1px solid var(--success-border);
+      border-radius: 12px;
+      padding: 22px 18px;
+      margin: 20px 0 12px;
+    }
+    .deadline-countdown { border-right: 1px solid var(--success-border); padding-right: 12px; }
+    .deadline-label { font-size: 14px; color: var(--success-label); font-weight: 600; }
+    .deadline-days { color: var(--success); font-size: clamp(32px, 5vw, 52px); font-weight: 800; line-height: 1.2; margin-top: 6px; }
+    .deadline-date { font-size: clamp(17px, 2.4vw, 23px); font-weight: 750; color: var(--text); margin-top: 8px; }
+    .deadline-facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-bottom: 18px; }
+    .deadline-fact { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 12px; }
+    .deadline-fact-label { color: var(--muted); font-size: 13px; margin-bottom: 6px; }
+    .deadline-fact-value { font-weight: 750; font-size: clamp(15px, 2.2vw, 20px); }
+    .deadline-fact-value.age { color: var(--link); }
+    @media (max-width: 480px) {
+      .deadline-overview { grid-template-columns: 1fr; gap: 12px; text-align: center; }
+      .deadline-countdown { border-right: none; border-bottom: 1px solid var(--success-border); padding: 0 0 12px; }
+      .deadline-facts { gap: 8px; }
+      .deadline-fact { padding: 12px 8px; }
+    }
+
+    footer {
+      margin-top: 70px;
+      padding: 30px;
+      text-align: center;
+      color: var(--subtle);
+      font-size: 13px;
+    }
+
+    @media (min-width: 601px) and (max-width: 1000px) {
+      .country-list {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        margin-top: 30px;
+      }
+
+      h1 {
+        font-size: 28px;
+      }
+
+      .country-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .country-card {
+        padding: 16px 5px;
+      }
+
+      .calculator {
+        padding: 30px 15px;
+      }
+
+      #year { width: 95px; }
+
+      #month,
+      #day { width: 65px; }
+    }
+#allCountriesResult {
+  margin-top: 30px;
+  text-align: left;
+}
+
+.eligible-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.eligible-card {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.eligible-card {
+  background: var(--page);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 10px;
+  text-align: center;
+}
+
+.eligible-name {
+  font-size: 17px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.eligible-detail {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+@media (max-width: 600px) {
+  .eligible-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+.map-guide {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
+
+.map-scroll {
+  max-width: 920px;
+  margin: 0 auto 30px;
+  overflow-x: auto;
+  border-radius: 14px;
+  background: var(--panel);
+}
+
+.world-map {
+  position: relative;
+  width: 920px;
+  height: 377px;
+}
+
+.world-map-image {
+  display: block;
+  width: 920px;
+  height: 377px;
+}
+
+.map-country-list {
+  position: absolute;
+  inset: 0;
+}
+
+/* 사진 속 국가 이름 위에 놓이는 클릭 영역 */
+.world-map .country-card {
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+  border: 2px solid transparent;
+  border-radius: 3px;
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.world-map .country-card:hover {
+  transform: none;
+  border-color: #63b3ff;
+  background: rgba(33, 150, 243, 0.15);
+  opacity: 1;
+}
+
+.world-map .country-card.active {
+  border-color: #ffbd32;
+  background: rgba(255, 189, 50, 0.18);
+}
+
+.world-map .country-card:focus-visible {
+  outline: 3px solid #2196f3;
+  outline-offset: 2px;
+}
+/* 새 검색 화면 */
+.search-hero {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 30px;
+  border-radius: 20px;
+  background: var(--soft-blue);
+  color: var(--heading);
+}
+
+.hero-brand {
+  color: var(--link);
+  font-size: 15px;
+  margin-bottom: 18px;
+}
+
+.search-hero h1 {
+  font-size: 30px;
+  line-height: 1.4;
+  margin: 0 0 14px;
+}
+
+.hero-description {
+  color: var(--muted);
+  line-height: 1.7;
+  margin: 0 0 22px;
+}
+
+.birth-panel {
+  background: var(--surface);
+  padding: 20px;
+  border-radius: 16px;
+}
+
+.birth-label {
+  text-align: left;
+  font-weight: bold;
+  margin-bottom: 14px;
+}
+
+.birth-fields {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.birth-fields select {
+  width: 100%;
+  min-width: 0;
+  height: 54px;
+  text-align: center;
+  color: var(--heading);
+  border-color: var(--border);
+}
+
+.birth-fields #year,
+.birth-fields #month,
+.birth-fields #day {
+  width: 100%;
+}
+
+.search-button {
+  display: block;
+  width: 100%;
+  margin-top: 15px;
+  padding: 18px 10px;
+  background: var(--primary-button);
+  font-weight: bold;
+}
+
+.search-button:hover {
+  background: #1d4ed8;
+  opacity: 1;
+}
+
+/* 지도 영역 */
+.map-section {
+  max-width: 920px;
+  margin: 38px auto 0;
+}
+
+.map-section h2,
+.map-section .map-guide {
+  text-align: left;
+}
+
+.map-section h2 {
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+
+/* 전체 검색 결과: 국가마다 가로형 행 */
+#allCountriesResult {
+  max-width: 920px;
+  margin: 28px auto 0;
+}
+
+.results-heading {
+  font-size: 24px;
+  line-height: 1.4;
+  margin: 0 0 8px;
+}
+
+.results-description {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.7;
+  margin-bottom: 18px;
+}
+
+.country-results {
+  display: grid;
+  gap: 12px;
+}
+
+.country-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+
+.row-flag {
+  width: 42px;
+  height: 32px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.row-country {
+  flex: 1;
+  min-width: 0;
+}
+
+.row-name {
+  font-size: 19px;
+  font-weight: bold;
+  margin-bottom: 7px;
+}
+
+.row-date {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.row-countdown {
+  flex-shrink: 0;
+  text-align: right;
+}
+
+.row-dday {
+  font-size: 26px;
+  font-weight: bold;
+  color: var(--heading);
+  var(--surface)-space: nowrap;
+}
+
+.row-countdown-label {
+  margin-top: 5px;
+  font-size: 12px;
+  color: var(--subtle);
+}
+
+.results-notice {
+  margin-top: 18px;
+  font-size: 13px;
+  color: var(--subtle);
+  line-height: 1.7;
+}
+
+@media (max-width: 600px) {
+  .search-hero {
+    padding: 20px 12px;
+  }
+
+  .search-hero h1 {
+    font-size: 24px;
+  }
+
+  .birth-panel {
+    padding: 14px;
+  }
+
+  .birth-fields {
+    gap: 6px;
+  }
+
+  .birth-fields select {
+    font-size: 14px;
+    padding: 10px 4px;
+  }
+
+  .country-row {
+    padding: 15px 12px;
+    gap: 10px;
+  }
+
+  .row-flag {
+    width: 30px;
+    height: 24px;
+  }
+
+  .row-name {
+    font-size: 16px;
+  }
+
+  .row-dday {
+    font-size: 21px;
+  }
+
+  .results-heading {
+    font-size: 21px;
+  }
+}
+/* 같은 연령 기준끼리 묶은 결과 */
+.age-group {
+  margin-top: 22px;
+}
+
+.age-group-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  margin-bottom: 10px;
+}
+
+.age-group-title {
+  margin: 0;
+  font-size: 17px;
+  color: var(--heading);
+}
+
+.age-group-dday {
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--link);
+}
+
+.age-country-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.age-country-card {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+  padding: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.age-country-flag {
+  width: 30px;
+  height: 23px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.age-country-name {
+  min-width: 0;
+  font-size: 14px;
+  font-weight: bold;
+  overflow-wrap: anywhere;
+}
+
+.age-group-date {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+@media (max-width: 600px) {
+  .age-country-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .age-country-card {
+    padding: 10px;
+  }
+}
+.age-country-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.age-country-stay {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px 7px;
+  margin-top: 6px;
+  font-size: 11px;
+  font-weight: normal;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.age-country-stay > span {
+  var(--surface)-space: nowrap;
+}
+
+/* 태블릿에서는 국가 카드의 가로 공간을 확보합니다. */
+@media (min-width: 601px) and (max-width: 1000px) {
+  .age-country-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.stay-extra {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.stay-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 7px;
+  border: 1px solid var(--blue-border);
+  border-radius: 999px;
+  background: var(--soft-blue);
+  color: var(--link);
+  font-size: 10px;
+  font-weight: bold;
+  line-height: 1.4;
+  cursor: pointer;
+  list-style: none;
+}
+
+.stay-badge::-webkit-details-marker {
+  display: none;
+}
+
+.stay-badge::after {
+  content: "+";
+  margin-left: 4px;
+}
+
+.stay-extra[open] .stay-badge::after {
+  content: "−";
+}
+
+.stay-badge:hover {
+  background: var(--blue-border);
+}
+
+.stay-badge:focus-visible {
+  outline: 2px solid var(--link);
+  outline-offset: 3px;
+}
+
+.stay-extra[open] {
+  flex-basis: 100%;
+}
+
+.stay-extra-detail {
+  margin-top: 7px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: var(--panel);
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+/* 1. 생년월일 입력 영역 */
+.search-hero {
+  border: 1px solid var(--blue-border);
+  border-radius: 22px;
+  background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+  box-shadow: 0 6px 20px rgba(30, 64, 175, 0.05);
+}
+
+/* 2. 워홀 가능 국가 결과 영역 */
+#allCountriesResult:not(:empty) {
+  padding: 26px;
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  background: var(--surface);
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.04);
+}
+
+/* 결과가 없을 때는 테두리를 표시하지 않음 */
+#allCountriesResult:empty {
+  display: none;
+}
+
+/* 결과 패널 안의 국가 카드 */
+.age-country-card {
+  background: var(--panel);
+  border-color: var(--border);
+}
+
+/* 3. 세계지도 및 선택 국가 확인 영역 */
+.map-section {
+  padding: 26px;
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  background: var(--panel);
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.04);
+}
+
+.map-section h2 {
+  margin-top: 0;
+  color: var(--heading);
+}
+
+.map-section .map-scroll {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+
+/* 지도 아래 선택 국가 계산기 */
+.map-section .calculator {
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: none;
+}
+
+/* 모바일에서는 안쪽 여백을 줄임 */
+@media (max-width: 600px) {
+  .search-hero {
+    border-radius: 16px;
+  }
+
+  #allCountriesResult:not(:empty),
+  .map-section {
+    padding: 18px 12px;
+    border-radius: 16px;
+  }
+
+  .results-heading {
+    font-size: 20px;
+  }
+}
+/* 지도 이동은 유지하고 가로 스크롤바만 숨김 */
+.map-scroll {
+  scrollbar-width: none;
+}
+
+.map-scroll::-webkit-scrollbar {
+  display: none;
+}
+  .header-inner{max-width:920px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+  
+/* 연령별 대분류 → 대륙별 중분류: 스크롤을 줄이는 간결한 결과 화면 */
+.result-age-section {
+  margin-top: 14px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--surface);
+}
+.result-age-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  margin: 0;
+  padding: 12px 15px;
+  background: var(--soft-blue);
+  border-left: 5px solid var(--link);
+  color: var(--heading);
+  font-size: 18px;
+  font-weight: 800;
+}
+.result-age-heading .age-group-dday {
+  font-size: 16px;
+  color: var(--link);
+}
+.result-age-content { padding: 0 14px 12px; }
+.result-continent { margin: 0; }
+.result-continent-heading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 12px 0 8px;
+  padding-top: 9px;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+}
+.result-continent:first-child .result-continent-heading {
+  margin-top: 5px;
+  border-top: 0;
+  padding-top: 6px;
+}
+.result-continent-heading .continent-count {
+  margin-left: auto;
+  font-weight: 500;
+  color: var(--subtle);
+  font-size: 12px;
+}
+.result-continent .age-country-grid { margin: 0; }
+.result-continent .age-country-card {
+  min-height: 66px;
+  padding: 9px 10px;
+  background: var(--panel);
+  border-color: var(--border);
+  text-align: left;
+}
+.result-continent .age-country-card:hover {
+  background: var(--soft-blue);
+  border-color: var(--blue-border);
+}
+.result-continent .age-country-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.result-age-date {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+@media (max-width: 600px) {
+  .result-age-heading { padding: 11px 12px; font-size: 16px; }
+  .result-age-heading .age-group-dday { font-size: 14px; }
+  .result-age-content { padding: 0 9px 10px; }
+  .result-continent .age-country-card { min-height: 66px; padding: 8px 7px; gap: 7px; }
+  .result-continent .age-country-flag { width: 26px; height: 21px; }
+  .result-continent .age-country-name { font-size: 13px; }
+}
+
+/* 국적별 계산 기준 안내 */
+
+/* 28개국 블로그 안내: 간결한 가이드 카드 */
+.country-guide-link[hidden], .canada-country-intro[hidden] { display: none; }
+.country-guide-link {
+  margin: 0 0 18px;
+  padding: 15px 16px;
+  border: 1px solid var(--blue-border);
+  border-radius: 12px;
+  background: var(--gradient-start);
+  text-align: left;
+}
+.country-guide-link strong {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--heading);
+  font-size: 16px;
+  line-height: 1.4;
+  margin: 0 0 5px;
+}
+.country-guide-link strong::before { content: "📖"; font-size: 17px; }
+.country-guide-link p {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+  margin: 0 0 10px;
+}
+.country-guide-link a {
+  display: block;
+  width: 100%;
+  padding: 11px 12px;
+  background: var(--primary-button);
+  border-radius: 8px;
+  color: var(--on-button);
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.4;
+  text-align: center;
+}
+.country-guide-link a:hover, .country-guide-link a:focus-visible { background: #1d4ed8; }
+@media (max-width: 480px) {
+  .country-guide-link { padding: 12px; }
+  .country-guide-link strong { font-size: 15px; }
+  .country-guide-link a { padding: 11px 10px; font-size: 14px; }
+}
+
+/* 29개 국가 소개 카드: 공통 타이포그래피와 정보 계층을 정돈합니다. */
+.country-intro-container { max-width:100%; text-align:left; }
+.country-intro-container .canada-country-intro:first-child { margin-top:20px; }
+.canada-country-intro {
+  margin-top: 18px;
+  padding: 18px 0 4px;
+  border-top: 1px solid var(--border);
+  color: var(--heading);
+  text-align: left;
+}
+.canada-intro-heading {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+  text-align: left;
+}
+.canada-intro-heading img {
+  display: block;
+  width: 52px;
+  height: 35px;
+  object-fit: contain;
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  background: var(--surface);
+}
+.canada-intro-heading > div { min-width: 0; }
+.canada-intro-kicker {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+  overflow-wrap: anywhere;
+}
+.canada-intro-heading h3 {
+  margin: 3px 0 0;
+  font-size: 23px;
+  line-height: 1.25;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--heading);
+}
+.canada-intro-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 17px;
+}
+.canada-intro-facts > div {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+  min-width: 0;
+  padding: 9px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--panel);
+  color: var(--heading);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.canada-intro-facts b { color: var(--link); font-weight: 700; var(--surface)-space: nowrap; }
+.canada-intro-facts span { overflow-wrap: anywhere; }
+.canada-country-intro p {
+  margin: 0 0 12px;
+  font-size: 14px;
+  line-height: 1.82;
+  letter-spacing: -0.012em;
+  color: var(--muted);
+  text-align: left;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+.canada-country-intro p:last-child { margin-bottom: 0; }
+@media (max-width: 480px) {
+  .canada-intro-heading { gap: 10px; margin-bottom: 13px; }
+  .canada-intro-heading img { width: 45px; height: 30px; }
+  .canada-intro-heading h3 { font-size: 21px; }
+  .canada-intro-facts { gap: 7px; margin-bottom: 14px; }
+  .canada-intro-facts > div { padding: 8px 10px; }
+  .canada-country-intro p { font-size: 13.5px; line-height: 1.85; }
+}
+
+/* 모든 국가: 국가 소개 → 블로그 상세정보 → 연령 계산 결과 */
+.map-section .calculator > .selected-country,
+.map-section .calculator > .age-rule,
+.map-section .calculator > .result-info { display: none; }
+.map-section .calculator > .canada-country-intro {
+  margin: 0 0 20px;
+  padding: 0 0 18px;
+  border-top: 0;
+  border-bottom: 1px solid var(--blue-border);
+}
+.map-section .calculator > .country-guide-link { margin: 0 0 20px; }
+
+/* 개선 3: 600px 이하에서만 소개/블로그/결과 영역의 불필요한 여백 정리 */
+@media (max-width: 600px) {
+  .map-section { padding: 14px 10px; }
+  .map-section .calculator {
+    padding: 18px 12px;
+    border-radius: 13px;
+  }
+  .map-section .calculator > .canada-country-intro {
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+  }
+  .canada-intro-heading { gap: 10px; margin-bottom: 10px; }
+  .canada-intro-heading img { width: 45px; height: 30px; }
+  .canada-intro-heading h3 { font-size: 21px; }
+  .canada-intro-facts { gap: 6px; margin-bottom: 11px; }
+  .canada-intro-facts > div {
+    padding: 7px 9px;
+    gap: 6px;
+    font-size: 13px;
+  }
+  .canada-country-intro p {
+    margin-bottom: 9px;
+    font-size: 14px;
+    line-height: 1.72;
+  }
+  .map-section .calculator > .country-guide-link {
+    margin-bottom: 12px;
+    padding: 12px;
+  }
+  .country-guide-link strong { margin-bottom: 4px; font-size: 15px; }
+  .country-guide-link p { margin-bottom: 8px; }
+  .country-guide-link a { padding: 12px 10px; font-size: 14px; }
+  .map-section .calculator #result {
+    margin-top: 0;
+    padding: 16px 12px;
+  }
+  .map-section .calculator .result-title {
+    font-size: 21px;
+    margin-bottom: 12px;
+  }
+  .map-section .calculator .deadline-overview { margin: 12px 0; padding: 15px 12px; }
+  .map-section .calculator .deadline-facts { gap: 8px; margin-bottom: 12px; }
+  .map-section .calculator .deadline-fact { padding: 11px 9px; }
+  .map-section .calculator .result-info { line-height: 1.65; }
+}
+@media (max-width: 360px) {
+  .map-section { padding: 12px 8px; }
+  .map-section .calculator { padding: 15px 10px; }
+  .canada-intro-facts > div { max-width: 100%; }
+  .map-section .calculator .deadline-facts { grid-template-columns: 1fr; }
+}
+
+/* 개선 4: 국가 결과 카드의 규칙적인 정렬과 클릭 인지성 강화 */
+.result-continent .age-country-grid { align-items: stretch; }
+.result-continent .age-country-card {
+  height: 100%;
+  min-height: 78px;
+  gap: 9px;
+  padding: 11px 10px;
+  align-items: center;
+  transition: border-color .15s ease, background-color .15s ease, box-shadow .15s ease;
+}
+.result-continent .age-country-flag { width: 30px; height: 23px; }
+.result-continent .age-country-name { line-height: 1.35; }
+.result-continent .age-country-stay { margin-top: 5px; line-height: 1.45; }
+.result-continent .age-country-card:focus-visible {
+  outline: 3px solid var(--link);
+  outline-offset: 2px;
+}
+/* 개선 5: D-day 숫자에 시선을 모으되 기존 상태/날짜/주의문구는 유지 */
+.map-section .calculator .result-title { line-height: 1.35; }
+.map-section .calculator .deadline-overview {
+  border-color: var(--success-border);
+  gap: 16px;
+}
+.map-section .calculator .deadline-countdown { display: flex; flex-direction: column; justify-content: center; }
+.map-section .calculator .deadline-label { line-height: 1.45; }
+.map-section .calculator .deadline-days {
+  letter-spacing: -0.035em;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.12;
+}
+.map-section .calculator .deadline-date {
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+.map-section .calculator .deadline-fact-label { line-height: 1.45; }
+.map-section .calculator .deadline-fact-value { line-height: 1.4; }
+@media (max-width: 600px) {
+  .result-continent .age-country-card { min-height: 74px; gap: 7px; padding: 9px 8px; }
+  .result-continent .age-country-flag { width: 26px; height: 21px; }
+  .map-section .calculator .deadline-overview { gap: 10px; }
+  .map-section .calculator .deadline-days { font-size: clamp(34px, 10vw, 46px); }
+  .map-section .calculator .deadline-date { font-size: clamp(17px, 4.7vw, 22px); }
+}
+
+.theme-toggle {
+  margin: 0;
+  padding: 10px 14px;
+  min-height: 44px;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.theme-toggle:focus-visible { outline: 3px solid var(--link); outline-offset: 3px; }
+a { color: var(--link); }
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="header-inner">
+    <span>🌏 워홀 나이 계산기</span>
+    <button type="button" id="themeToggle" class="theme-toggle" aria-label="다크 모드" aria-pressed="false">다크 모드</button>
+  </div>
+</header>
+
+<script>
+(() => {
+  const toggle = document.getElementById("themeToggle");
+  const state = window.workingHolidayTheme;
+  function updateToggle() {
+    const dark = document.documentElement.dataset.theme === "dark";
+    toggle.textContent = dark ? "☀️ 화이트 모드" : "🌙 다크 모드";
+    toggle.setAttribute("aria-label", "다크 모드");
+    toggle.setAttribute("aria-pressed", String(dark));
+    toggle.title = dark ? "화이트 모드로 전환" : "다크 모드로 전환";
+  }
+  toggle.addEventListener("click", () => {
+    const theme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+    document.documentElement.dataset.theme = theme;
+    state.manual = true;
+    try { localStorage.setItem("workingholidayage-theme", theme); } catch (_) {}
+    updateToggle();
+  });
+  state.systemTheme.addEventListener("change", event => {
+    if (!state.manual) {
+      document.documentElement.dataset.theme = event.matches ? "dark" : "light";
+      updateToggle();
+    }
+  });
+  updateToggle();
+})();
+</script>
+
+
+<main class="container">
+
+  <!-- 전체 국가 검색 -->
+  <section class="search-hero">
+    <div class="hero-brand">🌐 WORKING HOLIDAY</div>
+
+    <h1>내 나이로 워홀 가능한 나라는?</h1>
+
+    <p class="hero-description">
+      생년월일을 입력하고 가능한 국가를 한 번에 확인하세요.
+    </p>
+
+    <div class="birth-panel">
+      <div class="birth-label">생년월일</div>
+
+      <div class="birth-fields">
+        <select id="year" aria-label="태어난 연도">
+          <option value="">태어난 연도</option>
+        </select>
+
+        <select id="month" aria-label="태어난 월">
+          <option value="">월</option>
+        </select>
+
+        <select id="day" aria-label="태어난 일">
+          <option value="">일</option>
+        </select>
+      </div>
+
+      <button
+        class="search-button"
+        type="button"
+        onclick="findEligibleCountries()"
+      >
+        워홀 가능 국가 한 번에 찾기 →
+      </button>
+    </div>
+  </section>
+
+  <!-- 전체 검색 결과 -->
+  <div id="allCountriesResult" aria-live="polite"></div>
+
+  <!-- 지도에서 특정 국가 확인 -->
+  <section class="map-section">
+    <h2>세계지도에서 국가별 확인하기</h2>
+
+    <p class="map-guide">
+      관심 있는 국가를 선택하면 해당 국가의 워홀 연령 조건을
+      확인할 수 있습니다.
+    </p>
+
+    <div class="map-scroll">
+      <div class="world-map">
+        <img
+          class="world-map-image"
+          src="working-map_2026.jpg"
+          alt="워킹홀리데이 국가 위치 지도"
+          width="920"
+          height="377"
+        >
+
+        <div id="countryList" class="map-country-list"></div>
+      </div>
+    </div>
+
+    <div class="calculator">
+      <div class="selected-country" id="selectedCountry">
+        🇨🇦 캐나다 워홀
+      </div>
+
+      <div class="age-rule" id="ageRule">
+        대한민국 국적자 기준 만 18세 ~ 만 35세
+      </div>
+
+      <p class="result-info">
+        위에서 입력한 생년월일로 선택 국가를 확인합니다.
+      </p>
+
+      <!-- 캐나다 시범: 국가 소개를 계산 결과 위에 먼저 표시 -->
+        <section id="canadaCountryIntro" class="canada-country-intro" aria-label="캐나다 국가 소개">
+          <div class="canada-intro-heading">
+            <img src="https://whic.mofa.go.kr/whic/images/nation18.gif" alt="캐나다 국기" width="42" height="28" loading="lazy">
+            <div>
+              <span class="canada-intro-kicker">북아메리카 대륙 북부에 있는 영연방 국가</span>
+              <h3>캐나다</h3>
+            </div>
+          </div>
+          <div class="canada-intro-facts">
+            <div><b>수도</b><span>오타와 (Ottawa)</span></div>
+            <div><b>언어</b><span>영어, 프랑스어</span></div>
+          </div>
+          <p>캐나다는 한국전 당시 2만 7천여 명의 병력을 파견한 3대 참전국이자, 민주주의·자유·인권 등의 가치를 공유하는 전통 우방국입니다. 우리나라 재외동포가 25만여 명으로 미국, 중국, 일본에 이어 네 번째로 많은 나라이기도 합니다.</p>
+          <p>한국과 캐나다는 1963년 수교하여 2014년 자유무역협정(FTA)을 체결하였고, 2022년 양국 정상회담을 계기로 ‘포괄적 전략적 동반자 관계’가 되었습니다. 양국의 인적 교류도 크게 성장하여 기존 4천 명 규모이던 워킹홀리데이가 2024년부터 1만 2천 명 규모의 청년교류프로그램으로 확대·개편되었습니다.</p>
+        </section>
+
+      <div id="result" aria-live="polite"></div>
+      <!-- 국가를 선택하면 해당 국가의 Blogger 상세정보 링크를 표시 -->
+      <aside id="countryGuideLink" class="country-guide-link" aria-label="국가별 워킹홀리데이 상세정보">
+        <strong id="countryGuideTitle">캐나다 워킹홀리데이 상세 가이드</strong>
+        <p id="countryGuideDescription">신청 조건 · 준비 서류 · 현지 생활</p>
+        <a id="countryGuideAnchor" href="https://helloworkingholiday.blogspot.com/2026/10/blog-post.html" target="_blank" rel="noopener noreferrer">자세히 알아보기 ↗</a>
+
+      </aside>
+      <div id="countryIntroContainer" class="country-intro-container">
+
+
+        <section id="australiaCountryIntro" class="canada-country-intro" aria-label="호주 국가 소개" hidden>
+          <div class="canada-intro-heading">
+            <img src="https://flagcdn.com/au.svg" alt="호주 국기" width="42" height="28" loading="lazy">
+            <div>
+              <span class="canada-intro-kicker">오스트레일리아 대륙에 있는 영연방 국가</span>
+              <h3>호주</h3>
+            </div>
+          </div>
+          <div class="canada-intro-facts">
+            <div><b>수도</b><span>캔버라 (Canberra)</span></div>
+            <div><b>언어</b><span>영어</span></div>
+          </div>
+          <p>호주는 우리나라와 가장 먼저 워킹홀리데이 협정을 체결한 국가입니다. 높은 최저임금과 모집 인원 제한이 없는 워킹홀리데이 제도로 많은 한국 청년들이 찾는 나라입니다.</p>
+        </section>
+
+        <section id="chileCountryIntro" class="canada-country-intro" aria-label="칠레 국가 소개" hidden>
+          <div class="canada-intro-heading">
+            <img src="https://flagcdn.com/cl.svg" alt="칠레 국기" width="42" height="28" loading="lazy">
+            <div>
+              <span class="canada-intro-kicker">남아메리카 남서부에 있는 공화국</span>
+              <h3>칠레</h3>
+            </div>
+          </div>
+          <div class="canada-intro-facts">
+            <div><b>수도</b><span>산티아고 (Santiago)</span></div>
+            <div><b>언어</b><span>스페인어</span></div>
+          </div>
+          <p>칠레는 1949년 5월 중남미 최초로 대한민국 정부를 승인한 전통적 우방국이자 우리나라의 첫 자유무역협정(FTA) 체결 상대국입니다. 구리 매장량 세계 1위로 알려져 있으며, 해안선의 길이가 6,435km에 이를 정도로 국토가 남북으로 길게 뻗어 있는 것이 특징입니다.</p>
+        </section>
+        <section id="hongkongCountryIntro" class="canada-country-intro" aria-label="홍콩 국가 소개" hidden>
+          <div class="canada-intro-heading">
+            <img src="https://flagcdn.com/hk.svg" alt="홍콩 국기" width="42" height="28" loading="lazy">
+            <div><span class="canada-intro-kicker">중국 대륙 남동부의 특별행정구</span><h3>홍콩</h3></div>
+          </div>
+          <div class="canada-intro-facts">
+            <div><b>수도</b><span>없음</span></div>
+            <div><b>언어</b><span>광둥어(중국어), 영어</span></div>
+          </div>
+          <p>홍콩은 국제금융과 물류의 중심지로서 아시아를 대표하는 글로벌 도시입니다. 중국어뿐 아니라 영어도 접할 수 있으며, 도시 곳곳에서 동서양의 문화가 함께 나타납니다. 쇼핑과 관광이 발달한 도시로도 잘 알려져 있습니다.</p>
+        </section>
+        <section id="hungaryCountryIntro" class="canada-country-intro" aria-label="헝가리 국가 소개" hidden>
+          <div class="canada-intro-heading">
+            <img src="https://flagcdn.com/hu.svg" alt="헝가리 국기" width="42" height="28" loading="lazy">
+            <div><span class="canada-intro-kicker">유럽 중동부에 있는 공화국</span><h3>헝가리</h3></div>
+          </div>
+          <div class="canada-intro-facts">
+            <div><b>수도</b><span>부다페스트 (Budapest)</span></div>
+            <div><b>언어</b><span>헝가리어</span></div>
+          </div>
+          <p>유럽에서 볼가강 다음으로 긴 다뉴브강이 수도 부다페스트를 가로지르며, 티서(Tisza)강은 헝가리 대평원을 나누고 있습니다. 중부 유럽의 큰 호수인 벌러톤(Balaton) 호수는 대표적인 관광 휴양지이자 수산물 생산지로 꼽힙니다.</p>
+        </section>
+        <section id="finlandCountryIntro" class="canada-country-intro" aria-label="핀란드 국가 소개" hidden>
+          <div class="canada-intro-heading">
+            <img src="https://flagcdn.com/fi.svg" alt="핀란드 국기" width="42" height="28" loading="lazy">
+            <div><span class="canada-intro-kicker">북유럽 발트해 연안의 국가</span><h3>핀란드</h3></div>
+          </div>
+          <div class="canada-intro-facts">
+            <div><b>수도</b><span>헬싱키 (Helsinki)</span></div>
+            <div><b>언어</b><span>핀란드어, 스웨덴어</span></div>
+          </div>
+          <p>높은 행복 지수로 알려진 핀란드는 국토의 70% 이상이 숲으로 덮인 호수와 자연의 나라입니다. 겨울에는 오로라와 산타클로스 마을을 경험할 수 있으며, 일상에 깊이 자리 잡은 사우나 문화도 핀란드의 특징입니다.</p>
+        </section>
+        <section id="franceCountryIntro" class="canada-country-intro" aria-label="프랑스 국가 소개" hidden>
+          <div class="canada-intro-heading">
+            <img src="https://flagcdn.com/fr.svg" alt="프랑스 국기" width="42" height="28" loading="lazy">
+            <div><span class="canada-intro-kicker">유럽 대륙 서부에 있는 나라</span><h3>프랑스</h3></div>
+          </div>
+          <div class="canada-intro-facts">
+            <div><b>수도</b><span>파리 (Paris)</span></div>
+            <div><b>언어</b><span>프랑스어</span></div>
+          </div>
+          <p>프랑스는 유럽의 정치·경제·사회·문화에 큰 영향을 미쳐 왔으며, 오랜 역사에 걸쳐 다양한 문화유산을 보유하고 있습니다. 건축, 디자인, 와인, 제과, 피부미용, 항공 등의 분야로도 잘 알려져 있어 관련 분야에 관심 있는 사람들에게 매력적인 나라입니다.</p>
+        </section>
+        <section id="japanCountryIntro" class="canada-country-intro" aria-label="일본 국가 소개" hidden>
+          <div class="canada-intro-heading">
+            <img src="https://flagcdn.com/jp.svg" alt="일본 국기" width="42" height="28" loading="lazy">
+            <div><span class="canada-intro-kicker">아시아 대륙 동쪽에 있는 섬나라</span><h3>일본</h3></div>
+          </div>
+          <div class="canada-intro-facts">
+            <div><b>수도</b><span>도쿄 (Tokyo)</span></div>
+            <div><b>언어</b><span>일본어</span></div>
+          </div>
+          <p>일본은 한국과 지리적으로 가깝고 문화 교류가 활발한 나라입니다. 한류의 영향으로 한국 문화에 관심 있는 사람들을 만날 기회가 있으며, 한국어를 활용할 수 있는 관광 관련 일자리도 찾아볼 수 있습니다. 일본어는 한국어와 어순이 비슷하다는 점도 특징입니다.</p>
+        </section>
+        <section id="czechCountryIntro" class="canada-country-intro" aria-label="체코 국가 소개" hidden>
+          <div class="canada-intro-heading">
+            <img src="https://flagcdn.com/cz.svg" alt="체코 국기" width="42" height="28" loading="lazy">
+            <div><span class="canada-intro-kicker">유럽 중부에 위치한 내륙국가</span><h3>체코</h3></div>
+          </div>
+          <div class="canada-intro-facts">
+            <div><b>수도</b><span>프라하 (Prague)</span></div>
+            <div><b>언어</b><span>체코어</span></div>
+          </div>
+          <p>체코에는 역사적인 도시와 잘 보존된 관광자원이 많습니다. 프라하성(Prague Castle), 카를교(Charles Bridge), 그림 같은 중세도시 체스키크룸로프(Český Krumlov) 등 다양한 볼거리를 만날 수 있습니다.</p>
+        </section>
+        <section id="portugalCountryIntro" class="canada-country-intro" aria-label="포르투갈 국가 소개" hidden>
+          <div class="canada-intro-heading">
+            <img src="https://flagcdn.com/pt.svg" alt="포르투갈 국기" width="42" height="28" loading="lazy">
+            <div><span class="canada-intro-kicker">유럽 이베리아반도 서부에 있는 나라</span><h3>포르투갈</h3></div>
+          </div>
+          <div class="canada-intro-facts">
+            <div><b>수도</b><span>리스본 (Lisbon)</span></div>
+            <div><b>언어</b><span>포르투갈어</span></div>
+          </div>
+          <p>포르투갈은 높은 인간개발 수준과 의료체계, 평화로운 생활환경으로 알려진 나라입니다. 최근에는 젊은 층을 중심으로 K-pop, 한국 드라마, 영화 등 한국 대중문화에 대한 관심도 이어지고 있습니다.</p>
+        </section>
+        <section id="polandCountryIntro" class="canada-country-intro" aria-label="폴란드 국가 소개" hidden>
+          <div class="canada-intro-heading">
+            <img src="https://flagcdn.com/pl.svg" alt="폴란드 국기" width="42" height="28" loading="lazy">
+            <div><span class="canada-intro-kicker">중부 유럽 발트해에 면한 나라</span><h3>폴란드</h3></div>
+          </div>
+          <div class="canada-intro-facts">
+            <div><b>수도</b><span>바르샤바 (Warsaw)</span></div>
+            <div><b>언어</b><span>폴란드어</span></div>
+          </div>
+          <p>폴란드는 여러 차례 외세의 지배 속에서도 독립을 추구한 역사가 있어 독립 정신과 민족적 정체성이 문화에 깊이 반영되어 있습니다. 문학과 과학 등 여러 분야에서 노벨상 수상자를 배출한 나라이기도 합니다.</p>
+        </section>
+        <section id="italyCountryIntro" class="canada-country-intro" aria-label="이탈리아 국가 소개" hidden>
+          <div class="canada-intro-heading">
+            <img src="https://flagcdn.com/it.svg" alt="이탈리아 국기" width="42" height="28" loading="lazy">
+            <div><span class="canada-intro-kicker">유럽 중남부에 있는 나라</span><h3>이탈리아</h3></div>
+          </div>
+          <div class="canada-intro-facts">
+            <div><b>수도</b><span>로마 (Rome)</span></div>
+            <div><b>언어</b><span>이탈리아어</span></div>
+          </div>
+          <p>장화 모양의 반도와 시칠리아, 사르데냐 등 섬으로 이루어진 나라입니다. 고대 로마부터 이어진 오랜 역사와 풍부한 유적, 뛰어난 자연경관을 갖추고 있으며, 유네스코 세계유산으로 등재된 명소도 많습니다.</p>
+        </section>
+        <section id="israelCountryIntro" class="canada-country-intro" aria-label="이스라엘 국가 소개" hidden>
+          <div class="canada-intro-heading">
+            <img src="https://flagcdn.com/il.svg" alt="이스라엘 국기" width="42" height="28" loading="lazy">
+            <div><span class="canada-intro-kicker">아시아 서남부에 있는 나라</span><h3>이스라엘</h3></div>
+          </div>
+          <div class="canada-intro-facts">
+            <div><b>수도</b><span>예루살렘 (Jerusalem)</span></div>
+            <div><b>언어</b><span>히브리어, 아랍어</span></div>
+          </div>
+          <p>이스라엘은 서비스업과 광공업이 산업에서 큰 비중을 차지하며, 첨단기술 산업을 육성해 온 나라입니다. 특히 정보기술(IT) 분야의 혁신과 창업 생태계로 알려져 있습니다.</p>
+        </section>
+        <section id="austriaCountryIntro" class="canada-country-intro" aria-label="오스트리아 국가 소개" hidden>
+          <div class="canada-intro-heading">
+            <img src="https://flagcdn.com/at.svg" alt="오스트리아 국기" width="42" height="28" loading="lazy">
+            <div><span class="canada-intro-kicker">유럽 중부에 있는 공화국</span><h3>오스트리아</h3></div>
+          </div>
+          <div class="canada-intro-facts">
+            <div><b>수도</b><span>빈 (Vienna)</span></div>
+            <div><b>언어</b><span>독일어</span></div>
+          </div>
+          <p>오스트리아는 유럽 중앙에서 정치·경제·문화가 만나는 교차로 역할을 해 온 나라입니다. 특히 음악으로 유명하며, 왈츠와 요들뿐 아니라 바로크·낭만주의·궁정 음악부터 현대 음악까지 여러 분야에서 뛰어난 음악가들을 배출했습니다.</p>
+        </section>
+        <section id="andorraCountryIntro" class="canada-country-intro" aria-label="안도라 국가 소개" hidden>
+          <div class="canada-intro-heading">
+            <img src="https://flagcdn.com/ad.svg" alt="안도라 국기" width="42" height="28" loading="lazy">
+            <div><span class="canada-intro-kicker">프랑스와 스페인 사이 피레네산맥의 공국</span><h3>안도라</h3></div>
+          </div>
+          <div class="canada-intro-facts">
+            <div><b>수도</b><span>안도라라베야</span></div>
+            <div><b>언어</b><span>카탈루냐어</span></div>
+          </div>
+          <p>유럽 서남부 이베리아반도의 작은 내륙국으로, 빙하 호수와 피레네산맥 사이에 아기자기한 거리와 오래된 건물이 어우러집니다. 스키와 온천으로 유명하며, 면세 쇼핑을 즐길 수 있는 곳으로도 알려져 있습니다.</p>
+        </section>
+        <section id="ukCountryIntro" class="canada-country-intro" aria-label="영국(YMS) 국가 소개" hidden>
+          <div class="canada-intro-heading">
+            <img src="https://flagcdn.com/gb.svg" alt="영국(YMS) 국기" width="42" height="28" loading="lazy">
+            <div><span class="canada-intro-kicker">유럽 대륙 북서쪽의 섬나라</span><h3>영국(YMS)</h3></div>
+          </div>
+          <div class="canada-intro-facts">
+            <div><b>수도</b><span>런던 (London)</span></div>
+            <div><b>언어</b><span>영어</span></div>
+          </div>
+          <p>영국은 그레이트브리튼섬의 잉글랜드·스코틀랜드·웨일스와 아일랜드섬 북쪽의 북아일랜드로 이루어져 있습니다. 다양한 문화적 배경을 가진 사람들이 함께 살며, 시각·공연예술부터 과학과 디자인까지 오랜 전통과 창의적인 활동이 공존합니다.</p>
+        </section>
+        <section id="irelandCountryIntro" class="canada-country-intro" aria-label="아일랜드 국가 소개" hidden>
+          <div class="canada-intro-heading">
+            <img src="https://flagcdn.com/ie.svg" alt="아일랜드 국기" width="42" height="28" loading="lazy">
+            <div><span class="canada-intro-kicker">북대서양 아일랜드섬의 대부분을 차지하는 나라</span><h3>아일랜드</h3></div>
+          </div>
+          <div class="canada-intro-facts">
+            <div><b>수도</b><span>더블린 (Dublin)</span></div>
+            <div><b>언어</b><span>영어, 아일랜드어</span></div>
+          </div>
+          <p>아일랜드는 영어를 사용하면서도 고유한 문화와 언어를 간직한 나라입니다. 한국인 비율이 상대적으로 낮은 영어권 환경을 찾는 사람들에게 관심을 받아 왔으며, IT 산업의 성장으로 더블린을 비롯한 주요 도시가 기술기업의 거점으로 알려져 있습니다.</p>
+        </section>
+        <section id="luxembourgCountryIntro" class="canada-country-intro" aria-label="룩셈부르크 국가 소개" hidden>
+          <div class="canada-intro-heading">
+            <img src="https://flagcdn.com/lu.svg" alt="룩셈부르크 국기" width="42" height="28" loading="lazy">
+            <div><span class="canada-intro-kicker">독일과 프랑스 사이에 있는 대공국</span><h3>룩셈부르크</h3></div>
+          </div>
+          <div class="canada-intro-facts">
+            <div><b>수도</b><span>룩셈부르크</span></div>
+            <div><b>언어</b><span>룩셈부르크어, 프랑스어, 독일어</span></div>
+          </div>
+          <p>룩셈부르크는 독일과 프랑스 사이에 위치하며 대공이 국가원수인 대공국입니다. 국민소득이 높은 나라 중 하나로 알려져 있으며, 여러 언어와 문화가 어우러진 생활환경이 특징입니다.</p>
+        </section>
+        <section id="belgiumCountryIntro" class="canada-country-intro" aria-label="벨기에 국가 소개" hidden>
+          <div class="canada-intro-heading">
+            <img src="https://flagcdn.com/be.svg" alt="벨기에 국기" width="42" height="28" loading="lazy">
+            <div><span class="canada-intro-kicker">유럽 북서부에 있는 입헌군주국</span><h3>벨기에</h3></div>
+          </div>
+          <div class="canada-intro-facts">
+            <div><b>수도</b><span>브뤼셀 (Brussels)</span></div>
+            <div><b>언어</b><span>네덜란드어, 프랑스어, 독일어</span></div>
+          </div>
+          <p>벨기에는 국토가 비교적 작고 인구밀도가 높은 서유럽 국가입니다. 브뤼셀에는 유럽연합(EU)의 주요 기관이 자리하고 있으며, 여러 도시에서 운하와 역사적인 건물들이 어우러진 풍경을 볼 수 있습니다.</p>
+        </section>
+        <section id="brazilCountryIntro" class="canada-country-intro" aria-label="브라질 국가 소개" hidden>
+          <div class="canada-intro-heading">
+            <img src="https://flagcdn.com/br.svg" alt="브라질 국기" width="42" height="28" loading="lazy">
+            <div><span class="canada-intro-kicker">남아메리카 중부와 동부에 걸친 연방국</span><h3>브라질</h3></div>
+          </div>
+          <div class="canada-intro-facts">
+            <div><b>수도</b><span>브라질리아 (Brasília)</span></div>
+            <div><b>언어</b><span>포르투갈어</span></div>
+          </div>
+          <p>브라질은 남아메리카에서 면적이 가장 큰 나라로, 2억 명이 넘는 인구를 가지고 있습니다. 아메리카 대륙에서 포르투갈어를 공용어로 사용하는 대표적인 나라로, 아마존 열대우림과 삼바·카니발, 축구로 널리 알려져 있습니다.</p>
+        </section>
+        <section id="swedenCountryIntro" class="canada-country-intro" aria-label="스웨덴 국가 소개" hidden>
+          <div class="canada-intro-heading">
+            <img src="https://flagcdn.com/se.svg" alt="스웨덴 국기" width="42" height="28" loading="lazy">
+            <div><span class="canada-intro-kicker">북유럽 스칸디나비아반도 동쪽에 있는 나라</span><h3>스웨덴</h3></div>
+          </div>
+          <div class="canada-intro-facts">
+            <div><b>수도</b><span>스톡홀름 (Stockholm)</span></div>
+            <div><b>언어</b><span>스웨덴어</span></div>
+          </div>
+          <p>스웨덴은 복지제도로 잘 알려진 북유럽 국가로, 영어로 의사소통할 수 있는 사람도 많습니다. 전자·통신·기계·자동차 관련 산업이 발달했으며, 북부 지역에서는 여름에 해가 매우 늦게 지는 백야 현상을 경험할 수 있습니다.</p>
+        </section>
+        <section id="spainCountryIntro" class="canada-country-intro" aria-label="스페인 국가 소개" hidden>
+          <div class="canada-intro-heading">
+            <img src="https://flagcdn.com/es.svg" alt="스페인 국기" width="42" height="28" loading="lazy">
+            <div><span class="canada-intro-kicker">유럽 남서쪽 이베리아반도에 있는 나라</span><h3>스페인</h3></div>
+          </div>
+          <div class="canada-intro-facts">
+            <div><b>수도</b><span>마드리드 (Madrid)</span></div>
+            <div><b>언어</b><span>스페인어</span></div>
+          </div>
+          <p>스페인에는 복잡하고 오랜 역사만큼 다양한 문화유산이 남아 있습니다. 가톨릭 전통과 이슬람 문화의 흔적이 곳곳에 나타나며, 특히 남부 안달루시아 지역에서 그 영향을 볼 수 있습니다. 플라멩코와 축제, 투우도 스페인의 문화적 상징으로 알려져 있습니다.</p>
+        </section>
+        <section id="argentinaCountryIntro" class="canada-country-intro" aria-label="아르헨티나 국가 소개" hidden>
+          <div class="canada-intro-heading">
+            <img src="https://flagcdn.com/ar.svg" alt="아르헨티나 국기" width="42" height="28" loading="lazy">
+            <div><span class="canada-intro-kicker">남아메리카 대륙 남동부에 있는 연방제 공화국</span><h3>아르헨티나</h3></div>
+          </div>
+          <div class="canada-intro-facts">
+            <div><b>수도</b><span>부에노스아이레스 (Buenos Aires)</span></div>
+            <div><b>언어</b><span>스페인어</span></div>
+          </div>
+          <p>아르헨티나는 팜파스의 넓은 평원, 탱고, 가우초 문화로 잘 알려져 있습니다. 유럽에서 건너온 이민자들의 영향이 건축과 생활문화에 남아 있어 도시 곳곳에서 유럽풍 풍경을 발견할 수 있습니다.</p>
+        </section>
+        <section id="latviaCountryIntro" class="canada-country-intro" aria-label="라트비아 국가 소개" hidden>
+          <div class="canada-intro-heading">
+            <img src="https://flagcdn.com/lv.svg" alt="라트비아 국기" width="42" height="28" loading="lazy">
+            <div><span class="canada-intro-kicker">북유럽 발트해 연안에 있는 공화국</span><h3>라트비아</h3></div>
+          </div>
+          <div class="canada-intro-facts">
+            <div><b>수도</b><span>리가 (Riga)</span></div>
+            <div><b>언어</b><span>라트비아어</span></div>
+          </div>
+          <p>정식 명칭은 라트비아 공화국(Republic of Latvia)으로, 단원제 의회를 가진 민주주의 국가입니다. 에스토니아·리투아니아와 함께 발트 3국으로 불리며, 지리적으로 세 나라의 가운데에 위치합니다.</p>
+        </section>
+        <section id="germanyCountryIntro" class="canada-country-intro" aria-label="독일 국가 소개" hidden>
+          <div class="canada-intro-heading">
+            <img src="https://flagcdn.com/de.svg" alt="독일 국기" width="42" height="28" loading="lazy">
+            <div><span class="canada-intro-kicker">유럽 중부에 있는 나라</span><h3>독일</h3></div>
+          </div>
+          <div class="canada-intro-facts">
+            <div><b>수도</b><span>베를린 (Berlin)</span></div>
+            <div><b>언어</b><span>독일어</span></div>
+          </div>
+          <p>독일은 법률, 의료, 철학, 신재생에너지, 음악, 항공 등 다양한 분야에서 잘 알려진 나라입니다. 프랑크푸르트 도서전과 하노버 산업박람회처럼 국제적으로 유명한 박람회가 열리는 곳이기도 합니다.</p>
+        </section>
+        <section id="denmarkCountryIntro" class="canada-country-intro" aria-label="덴마크 국가 소개" hidden>
+          <div class="canada-intro-heading">
+            <img src="https://flagcdn.com/dk.svg" alt="덴마크 국기" width="42" height="28" loading="lazy">
+            <div><span class="canada-intro-kicker">유럽 북부 유틀란트반도에 있는 나라</span><h3>덴마크</h3></div>
+          </div>
+          <div class="canada-intro-facts">
+            <div><b>수도</b><span>코펜하겐 (Copenhagen)</span></div>
+            <div><b>언어</b><span>덴마크어</span></div>
+          </div>
+          <p>덴마크는 에너지 효율과 신재생에너지, 해양기술 분야에서 잘 알려진 나라입니다. 한국과는 바이오·의료 분야 등에서 협력 관계를 발전시켜 왔습니다.</p>
+        </section>
+        <section id="taiwanCountryIntro" class="canada-country-intro" aria-label="대만 국가 소개" hidden>
+          <div class="canada-intro-heading">
+            <img src="https://flagcdn.com/tw.svg" alt="대만 국기" width="42" height="28" loading="lazy">
+            <div><span class="canada-intro-kicker">유라시아 대륙 동남부와 서태평양 사이에 있는 섬</span><h3>대만</h3></div>
+          </div>
+          <div class="canada-intro-facts">
+            <div><b>수도</b><span>타이베이 (Taipei)</span></div>
+            <div><b>언어</b><span>중국어</span></div>
+          </div>
+          <p>대만은 한국의 주요 교역 상대 중 하나로, 무역·건설·서비스 등 다양한 산업이 발달해 있습니다. 외국인 학생을 대상으로 대만 교육부가 제공하는 장학금 제도도 운영되고 있습니다.</p>
+        </section>
+        <section id="newzealandCountryIntro" class="canada-country-intro" aria-label="뉴질랜드 국가 소개" hidden>
+          <div class="canada-intro-heading">
+            <img src="https://flagcdn.com/nz.svg" alt="뉴질랜드 국기" width="42" height="28" loading="lazy">
+            <div><span class="canada-intro-kicker">남태평양에 있는 섬나라</span><h3>뉴질랜드</h3></div>
+          </div>
+          <div class="canada-intro-facts">
+            <div><b>수도</b><span>웰링턴 (Wellington)</span></div>
+            <div><b>언어</b><span>영어, 마오리어</span></div>
+          </div>
+          <p>마오리어로 ‘길고 흰 구름의 땅’이라는 뜻의 아오테아로아(Aotearoa)라고도 불립니다. 북섬과 남섬을 중심으로 아름다운 자연과 독특한 문화를 경험할 수 있으며, 영화 《반지의 제왕》과 《호빗》 등의 촬영지로 유명합니다.</p>
+        </section>
+        <section id="netherlandsCountryIntro" class="canada-country-intro" aria-label="네덜란드 국가 소개" hidden>
+          <div class="canada-intro-heading">
+            <img src="https://flagcdn.com/nl.svg" alt="네덜란드 국기" width="42" height="28" loading="lazy">
+            <div><span class="canada-intro-kicker">유럽 서부에 있는 입헌군주제 국가</span><h3>네덜란드</h3></div>
+          </div>
+          <div class="canada-intro-facts">
+            <div><b>수도</b><span>암스테르담 (Amsterdam)</span></div>
+            <div><b>언어</b><span>네덜란드어</span></div>
+          </div>
+          <p>풍차·튤립·운하·자전거로 유명한 네덜란드는 한국에도 친숙한 나라입니다. 수백 년 동안 바다를 막고 물을 관리하며 간척지를 일구어 왔으며, 금융·물류·전자·화훼·낙농·석유화학 등 다양한 산업이 발달했습니다.</p>
+        </section>
+      </div>
+
+
+    </div>
+  </section>
+
+</main>
+
+
+<footer>
+  © <span id="footerYear"></span> 워홀 나이 계산기
+</footer>
+
+
+
+
+<script>
+  // 보내준 재외동포청 표의 연령 기준
+  // 국가를 추가하거나 수정할 때는 이 목록을 수정하면 됩니다.
+  const countries = {
+    canada:      { name: "캐나다",       flag: "🇨🇦", minAge: 18, maxAge: 35 },
+    australia:   { name: "호주",         flag: "🇦🇺", minAge: 18, maxAge: 35 },
+    japan:       { name: "일본",         flag: "🇯🇵", minAge: 18, maxAge: 25 },
+    netherlands: { name: "네덜란드",     flag: "🇳🇱", minAge: 18, maxAge: 30 },
+    newzealand:  { name: "뉴질랜드",     flag: "🇳🇿", minAge: 18, maxAge: 30 },
+    taiwan:      { name: "대만",         flag: "🇹🇼", minAge: 18, maxAge: 34 },
+    denmark:     { name: "덴마크",       flag: "🇩🇰", minAge: 18, maxAge: 34 },
+    germany:     { name: "독일",         flag: "🇩🇪", minAge: 18, maxAge: 34 },
+    latvia:      { name: "라트비아",     flag: "🇱🇻", minAge: 18, maxAge: 34 },
+    luxembourg:  { name: "룩셈부르크",   flag: "🇱🇺", minAge: 18, maxAge: 35 },
+    belgium:     { name: "벨기에",       flag: "🇧🇪", minAge: 18, maxAge: 30 },
+    sweden:      { name: "스웨덴",       flag: "🇸🇪", minAge: 18, maxAge: 30 },
+    spain:       { name: "스페인",       flag: "🇪🇸", minAge: 18, maxAge: 30 },
+    argentina:   { name: "아르헨티나",   flag: "🇦🇷", minAge: 18, maxAge: 34 },
+    ireland:     { name: "아일랜드",     flag: "🇮🇪", minAge: 18, maxAge: 34 },
+    andorra:     { name: "안도라",       flag: "🇦🇩", minAge: 18, maxAge: 30 },
+    uk:          { name: "영국(YMS)",    flag: "🇬🇧", minAge: 18, maxAge: 35 },
+    austria:     { name: "오스트리아",   flag: "🇦🇹", minAge: 18, maxAge: 30 },
+    israel:      { name: "이스라엘",     flag: "🇮🇱", minAge: 18, maxAge: 30 },
+    italy:       { name: "이탈리아",     flag: "🇮🇹", minAge: 18, maxAge: 30 },
+    czech:       { name: "체코",         flag: "🇨🇿", minAge: 18, maxAge: 30 },
+    chile:       { name: "칠레",         flag: "🇨🇱", minAge: 18, maxAge: 34 },
+    portugal:    { name: "포르투갈",     flag: "🇵🇹", minAge: 18, maxAge: 34 },
+    poland:      { name: "폴란드",       flag: "🇵🇱", minAge: 18, maxAge: 30 },
+    france:      { name: "프랑스",       flag: "🇫🇷", minAge: 18, maxAge: 35 },
+    hungary:     { name: "헝가리",       flag: "🇭🇺", minAge: 18, maxAge: 30 },
+    hongkong:    { name: "홍콩",         flag: "🇭🇰", minAge: 18, maxAge: 30 },
+    brazil:      { name: "브라질",       flag: "🇧🇷", minAge: 18, maxAge: 34 },
+    finland:     { name: "핀란드",       flag: "🇫🇮", minAge: 18, maxAge: 35, pending: true }
+  };
+
+const stayPeriods = {
+  canada: {
+    text: "최대 24개월 거주가능",
+    badge: "재참여 가능",
+    detail: "조건 충족 시 재지원 가능 · 총 2회, 회당 최대 24개월"
+  },
+  australia: {
+    text: "최대 12개월 거주가능",
+    badge: "조건부 추가 참여",
+    detail: "조건 충족 시 두 번째·세 번째 워홀 신청 가능 · 총 최대 36개월"
+  },
+  japan: {
+    text: "최대 12개월 거주가능",
+    badge: "재참여 가능",
+    detail: "최대 2회 참여 가능 · 재참여 시 별도 신청 및 자격 확인 필요"
+  },
+  netherlands: {
+    text: "최대 12개월 거주가능"
+  },
+  newzealand: {
+    text: "최대 12개월 거주가능",
+    badge: "조건부 +3개월",
+    detail: "지정된 원예·포도재배 분야 계절근로 등 조건 충족 시 3개월 연장 신청 가능"
+  },
+  taiwan: {
+    text: "최초 180일 거주가능",
+    badge: "연장 가능",
+    detail: "체류 연장 신청 시 최초 입국일부터 최대 360일"
+  },
+  denmark:     { text: "최대 12개월 거주가능" },
+  germany:     { text: "최대 12개월 거주가능" },
+  latvia:      { text: "최대 12개월 거주가능" },
+  luxembourg:  { text: "최대 12개월 거주가능" },
+  belgium:     { text: "최대 12개월 거주가능" },
+  sweden:      { text: "최대 12개월 거주가능" },
+  spain:       { text: "최대 12개월 거주가능" },
+  argentina:   { text: "최대 12개월 거주가능" },
+  ireland:     { text: "최대 12개월 거주가능" },
+  andorra:     { text: "최대 12개월 거주가능" },
+  uk:          { text: "최대 24개월 거주가능" },
+  austria:     { text: "최대 12개월 거주가능" },
+  israel:      { text: "최대 12개월 거주가능" },
+  italy:       { text: "최대 12개월 거주가능" },
+  czech:       { text: "최대 12개월 거주가능" },
+  chile:       { text: "최대 12개월 거주가능" },
+  portugal:    { text: "최대 12개월 거주가능" },
+  poland:      { text: "최대 12개월 거주가능" },
+  france:      { text: "최대 12개월 거주가능" },
+  hungary:     { text: "최대 12개월 거주가능" },
+  hongkong:    { text: "최대 12개월 거주가능" },
+  brazil:      { text: "최대 12개월 거주가능" },
+  finland:     { text: "발효 예정 · 기간 미확정" }
+};
+  const countryGuideUrls = {
+    canada: 'https://helloworkingholiday.blogspot.com/2026/10/blog-post.html',
+    chile: 'https://helloworkingholiday.blogspot.com/2026/10/blog-post_23.html',
+    australia: 'https://helloworkingholiday.blogspot.com/2026/10/blog-post_864.html',
+    france: 'https://helloworkingholiday.blogspot.com/2026/10/blog-post_294.html',
+    japan: 'https://helloworkingholiday.blogspot.com/2026/10/blog-post_738.html',
+    czech: 'https://helloworkingholiday.blogspot.com/2026/10/blog-post_244.html',
+    hungary: 'https://helloworkingholiday.blogspot.com/2026/10/blog-post_949.html',
+    portugal: 'https://helloworkingholiday.blogspot.com/2026/10/blog-post_24.html',
+    hongkong: 'https://helloworkingholiday.blogspot.com/2026/10/blog-post_264.html',
+    poland: 'https://helloworkingholiday.blogspot.com/2026/10/blog-post_593.html',
+    italy: 'https://helloworkingholiday.blogspot.com/2026/10/blog-post_315.html',
+    israel: 'https://helloworkingholiday.blogspot.com/2026/10/blog-post_896.html',
+    austria: 'https://helloworkingholiday.blogspot.com/2026/10/blog-post_663.html',
+    uk: 'https://helloworkingholiday.blogspot.com/2026/10/yms.html',
+    andorra: 'https://helloworkingholiday.blogspot.com/2026/10/blog-post_884.html',
+    ireland: 'https://helloworkingholiday.blogspot.com/2026/10/blog-post_487.html',
+    luxembourg: 'https://helloworkingholiday.blogspot.com/2026/10/blog-post_238.html',
+    belgium: 'https://helloworkingholiday.blogspot.com/2026/10/blog-post_258.html',
+    brazil: 'https://helloworkingholiday.blogspot.com/2026/10/blog-post_777.html',
+    sweden: 'https://helloworkingholiday.blogspot.com/2026/10/blog-post_147.html',
+    spain: 'https://helloworkingholiday.blogspot.com/2026/10/blog-post_652.html',
+    argentina: 'https://helloworkingholiday.blogspot.com/2026/10/blog-post_154.html',
+    latvia: 'https://helloworkingholiday.blogspot.com/2026/10/blog-post_882.html',
+    germany: 'https://helloworkingholiday.blogspot.com/2026/10/blog-post_990.html',
+    denmark: 'https://helloworkingholiday.blogspot.com/2026/10/blog-post_235.html',
+    newzealand: 'https://helloworkingholiday.blogspot.com/2026/10/blog-post_569.html',
+    netherlands: 'https://helloworkingholiday.blogspot.com/2026/10/blog-post_518.html',
+    taiwan: 'https://helloworkingholiday.blogspot.com/2026/10/blog-post_375.html'
+  };
+
+  let selectedCountry = "canada";
+
+  const countryList = document.getElementById("countryList");
+  const yearSelect = document.getElementById("year");
+  const monthSelect = document.getElementById("month");
+  const daySelect = document.getElementById("day");
+  const result = document.getElementById("result");
+
+  // 국가 선택 카드를 자동 생성합니다.
+// 지도 사진 속 국가 이름표의 위치입니다.
+// 배열 순서: 왼쪽 위치, 위쪽 위치, 너비, 높이
+// 기준 지도 크기: 920 × 377
+const mapPositions = {
+  denmark:     [143, 37, 63, 20],
+  netherlands: [143, 57, 63, 20],
+  germany:     [143, 77, 63, 20],
+  luxembourg:  [129, 97, 77, 20],
+  belgium:     [143, 117, 63, 20],
+  ireland:     [143, 137, 63, 20],
+  uk:          [143, 157, 63, 20],
+
+  poland:      [289, 36, 63, 20],
+  sweden:      [289, 56, 63, 20],
+  finland:     [289, 76, 63, 20],
+  czech:       [289, 107, 66, 20],
+  latvia:      [289, 127, 66, 20],
+  austria:     [289, 147, 76, 20],
+  hungary:     [289, 167, 66, 20],
+
+  france:      [94, 186, 64, 20],
+  spain:       [101, 206, 64, 20],
+  andorra:     [101, 226, 64, 20],
+  portugal:    [160, 185, 64, 20],
+  italy:       [170, 212, 68, 20],
+  israel:      [241, 231, 64, 20],
+
+  taiwan:      [364, 169, 63, 20],
+  hongkong:    [347, 226, 64, 20],
+  japan:       [488, 165, 64, 20],
+
+  australia:   [488, 228, 64, 20],
+  newzealand:  [551, 264, 65, 20],
+
+  canada:      [558, 77, 64, 20],
+  chile:       [600, 225, 64, 20],
+  brazil:      [784, 256, 63, 20],
+  argentina:   [733, 306, 76, 20]
+};
+
+// 지도 위에 국가별 클릭 버튼을 생성합니다.
+Object.entries(countries).forEach(([code, country]) => {
+  const position = mapPositions[code];
+
+  if (!position) {
+    return;
+  }
+
+  const [left, top, width, height] = position;
+  const card = document.createElement("button");
+
+  card.type = "button";
+  card.className = "country-card";
+  card.id = code + "Card";
+
+  card.style.left = left + "px";
+  card.style.top = top + "px";
+  card.style.width = width + "px";
+  card.style.height = height + "px";
+
+  const label = country.pending
+    ? country.name + " 선택 — 제공된 표 기준 발효 예정"
+    : country.name + " 선택";
+
+  card.setAttribute("aria-label", label);
+  card.title = label;
+
+  card.addEventListener("click", () => {
+    // 지도에서 선택할 때는 화면을 이동하지 않습니다.
+    selectCountry(code);
+  });
+
+
+    countryList.appendChild(card);
+  });
+
+  // 선택 국가를 변경합니다.
+  function selectCountry(code) {
+    selectedCountry = code;
+
+    const country = countries[code];
+    const guideUrl = countryGuideUrls[code];
+    const guidePanel = document.getElementById("countryGuideLink");
+    guidePanel.hidden = !guideUrl;
+    // 모든 국가를 국가 소개 → Blogger 링크(있는 경우) → 연령 계산 결과 순서로 정렬합니다.
+    const countryResult = document.getElementById("result");
+    const selectedIntro = document.getElementById(code + "CountryIntro");
+    const calculator = document.querySelector(".map-section .calculator");
+    // 이미 존재하는 소개 섹션을 이동하며 복제하지 않습니다.
+    calculator.insertBefore(selectedIntro, countryResult);
+    calculator.insertBefore(guidePanel, countryResult);
+    // 국가별 소개는 해당 국가를 선택했을 때만 노출합니다.
+    for (const introCode of ["canada", "australia", "chile", "hongkong", "hungary", "finland", "france", "japan", "czech", "portugal", "poland", "italy", "israel", "austria", "andorra", "uk", "ireland", "luxembourg", "belgium", "brazil", "sweden", "spain", "argentina", "latvia", "germany", "denmark", "taiwan", "newzealand", "netherlands"]) {
+      document.getElementById(introCode + "CountryIntro").hidden = code !== introCode;
+    }
+    if (guideUrl) {
+      document.getElementById("countryGuideTitle").textContent = `${country.name} 워킹홀리데이 상세 가이드`;
+      document.getElementById("countryGuideDescription").textContent =
+        `신청 조건 · 준비 서류 · 현지 생활`;
+      const guideAnchor = document.getElementById("countryGuideAnchor");
+      guideAnchor.href = guideUrl;
+      guideAnchor.textContent = `자세히 알아보기 ↗`;
+    }
+
+    document.querySelectorAll(".country-card").forEach(card => {
+      const active = card.id === code + "Card";
+      card.classList.toggle("active", active);
+      card.setAttribute("aria-pressed", String(active));
+    });
+
+    document.getElementById("selectedCountry").textContent =
+      `${country.flag} ${country.name} 워홀`;
+
+    let rule =
+      `대한민국 국적자 기준 만 ${country.minAge}세 ~ 만 ${country.maxAge}세`;
+
+    if (code === "japan") {
+      rule += " · 표에 별도 주석(**)이 있으므로 상세 조건 확인 필요";
+    }
+
+    if (country.pending) {
+      rule += " · 제공된 표 기준 발효 예정";
+    }
+
+    document.getElementById("ageRule").textContent = rule;
+
+    // 국가 선택 즉시 계산 결과를 표시합니다. 생년월일 미입력 시에는 안내만 보여줍니다.
+    if (yearSelect.value && monthSelect.value && daySelect.value) {
+      calculateAge();
+    } else {
+      result.style.display = "block";
+      result.innerHTML = '<p class="result-info">위에서 생년월일을 입력하면 선택한 국가의 결과가 바로 표시됩니다.</p>';
+    }
+  }
+
+  // 연도·월 목록을 생성합니다.
+  yearSelect.innerHTML = '<option value="">태어난 연도</option>';
+  monthSelect.innerHTML = '<option value="">월</option>';
+  const currentYear = new Date().getFullYear();
+
+  for (let year = currentYear; year >= 1950; year--) {
+    yearSelect.add(new Option(year, year));
+  }
+
+  for (let month = 1; month <= 12; month++) {
+    monthSelect.add(new Option(month, month));
+  }
+
+  // 선택한 연도와 월에 맞게 날짜 목록을 생성합니다.
+  function updateDays() {
+    const previousDay = daySelect.value;
+    const year = Number(yearSelect.value);
+    const month = Number(monthSelect.value);
+
+    const daysInMonth = month
+      ? new Date(year || 2000, month, 0).getDate()
+      : 31;
+
+    daySelect.innerHTML = '<option value="">일</option>';
+
+    for (let day = 1; day <= daysInMonth; day++) {
+      daySelect.add(new Option(day, day));
+    }
+
+    if (previousDay && Number(previousDay) <= daysInMonth) {
+      daySelect.value = previousDay;
+    }
+  }
+
+ function clearResult() {
+  result.style.display = "none";
+  result.innerHTML = "";
+
+  document.getElementById("allCountriesResult").innerHTML = "";
+  }
+
+  yearSelect.addEventListener("change", () => {
+    updateDays();
+    clearResult();
+  });
+
+  monthSelect.addEventListener("change", () => {
+    updateDays();
+    clearResult();
+  });
+
+  daySelect.addEventListener("change", clearResult);
+function remainingAgeText(lastDate) {
+  const today = new Date();
+
+  // 시간 차이는 제외하고 날짜만 비교합니다.
+  const start = Date.UTC(
+    today.getFullYear(),
+    today.getMonth(),
+    today.getDate()
+  );
+
+  const end = Date.UTC(
+    lastDate.getFullYear(),
+    lastDate.getMonth(),
+    lastDate.getDate()
+  );
+
+  const days = Math.round(
+    (end - start) / (24 * 60 * 60 * 1000)
+  );
+
+  if (days < 0) {
+    return "연령 기준 기간이 종료되었습니다.";
+  }
+
+  if (days === 0) {
+    return "D-0 · 오늘이 연령 기준상 마지막 날입니다.";
+  }
+
+  return `연령 기준 마지막 날까지 D-${days}`;
+}
+  function formatDate(date) {
+    return `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`;
+  }
+
+  // 생일 날짜를 생성합니다.
+  // 2월 29일생은 해당 연도에 2월 29일이 없으면 3월 1일을 사용합니다.
+  function birthdayAtAge(year, month, day, age) {
+    return new Date(year + age, month - 1, day);
+  }
+
+  // 두 계산기가 공통으로 사용하는 생년월일 검사와 만 나이 계산
+  function readBirthInfo() {
+    const year = Number(yearSelect.value);
+    const month = Number(monthSelect.value);
+    const day = Number(daySelect.value);
+
+    if (!year || !month || !day) {
+      alert("생년월일을 모두 선택해주세요.");
+      return null;
+    }
+
+    const birthDate = new Date(year, month - 1, day);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    if (
+      birthDate.getFullYear() !== year ||
+      birthDate.getMonth() !== month - 1 ||
+      birthDate.getDate() !== day
+    ) {
+      alert("올바른 날짜를 선택해주세요.");
+      return null;
+    }
+
+    if (birthDate > today) {
+      alert("생년월일이 현재 날짜보다 미래일 수 없습니다.");
+      return null;
+    }
+
+    let age = today.getFullYear() - year;
+
+    if (
+      today.getMonth() < month - 1 ||
+      (today.getMonth() === month - 1 && today.getDate() < day)
+    ) {
+      age--;
+    }
+
+    return { year, month, day, today, age };
+  }
+
+  function calculateAge() {
+    const country = countries[selectedCountry];
+
+    if (country.pending) {
+      result.style.display = "block";
+      result.innerHTML = `
+        <div class="result-title">🟡 발효 예정</div>
+        <div class="result-info">
+          제공된 표에서 ${country.name}은 발효 예정으로 표시되어 있습니다.
+          <br><br>
+          표의 예정 연령 기준은 만 ${country.minAge}세 ~ 만 ${country.maxAge}세입니다.
+          <br>
+          신청 개시 여부를 확인한 뒤 이용해주세요.
+        </div>
+      `;
+      return;
+    }
+
+    const birthInfo = readBirthInfo();
+    if (!birthInfo) return;
+    const { year, month, day, today, age } = birthInfo;
+
+    const startDate = birthdayAtAge(
+      year, month, day, country.minAge
+    );
+
+    const limitDate = birthdayAtAge(
+      year, month, day, country.maxAge + 1
+    );
+
+    const lastAgeEligibleDate = new Date(limitDate);
+    lastAgeEligibleDate.setDate(lastAgeEligibleDate.getDate() - 1);
+
+    const japanNote = selectedCountry === "japan"
+      ? `<br><br>※ 일본은 제공된 표에 별도 주석(**)이 있습니다.
+         사진에 주석 내용이 없어 이 계산에는 만 25세 기준만 반영했습니다.
+         상세 조건은 별도로 확인해주세요.`
+      : "";
+
+    const notice = `
+      <div class="result-info">
+        ※ 아래 기간은 나이만으로 계산한 기간이며,
+        실제 모집기간이나 비자 신청 마감일이 아닙니다.
+        국가별 연령 판단 시점과 기타 자격요건을 확인해주세요.
+        ${japanNote}
+      </div>
+    `;
+
+    result.style.display = "block";
+
+    if (age < country.minAge) {
+      result.innerHTML = `
+        <div class="result-title">🟡 아직 연령 기준 미충족</div>
+        <div class="result-info">
+          현재 만 <strong>${age}세</strong>입니다.
+          <br>
+          ${country.name}의 연령 기준은
+          만 ${country.minAge}세 ~ 만 ${country.maxAge}세입니다.
+        </div>
+        <div class="deadline">
+          연령 기준을 충족하는 기간
+          <br><br>
+          ${formatDate(startDate)}
+          <br>~<br>
+          ${formatDate(lastAgeEligibleDate)}
+        </div>
+
+        ${notice}
+      `;
+    } else if (age <= country.maxAge) {
+      const remainingDays = Math.max(0, Math.round(
+        (Date.UTC(lastAgeEligibleDate.getFullYear(), lastAgeEligibleDate.getMonth(), lastAgeEligibleDate.getDate()) -
+         Date.UTC(today.getFullYear(), today.getMonth(), today.getDate())) / 86400000
+      ));
+      result.innerHTML = `
+        <div class="result-title">🟢 연령 기준 충족</div>
+        <div class="deadline-overview">
+          <div class="deadline-countdown">
+            <div class="deadline-label">연령 기준 마지막 날까지</div>
+            <div class="deadline-days">D-${remainingDays}</div>
+          </div>
+          <div>
+            <div class="deadline-label">연령 기준 마지막 날짜</div>
+            <div class="deadline-date">${formatDate(lastAgeEligibleDate)}</div>
+          </div>
+        </div>
+        <div class="deadline-facts">
+          <div class="deadline-fact">
+            <div class="deadline-fact-label">현재 나이</div>
+            <div class="deadline-fact-value age">만 ${age}세</div>
+          </div>
+          <div class="deadline-fact">
+            <div class="deadline-fact-label">${country.name} 연령 기준</div>
+            <div class="deadline-fact-value">만 ${country.minAge}세 ~ 만 ${country.maxAge}세</div>
+          </div>
+        </div>
+        ${notice}
+      `;
+    } else {
+      result.innerHTML = `
+        <div class="result-title">🔴 연령 기준 초과</div>
+        <div class="result-info">
+          현재 만 <strong>${age}세</strong>입니다.
+          <br>
+          ${country.name}의 연령 기준은
+          만 ${country.minAge}세 ~ 만 ${country.maxAge}세입니다.
+          <br><br>
+          연령 기준상 마지막 해당 날짜는
+          <strong>${formatDate(lastAgeEligibleDate)}</strong>입니다.
+        </div>
+        <br>
+        ${notice}
+      `;
+    }
+  }
+// 검색 결과 국가를 누르면 지도에서 해당 국가를 선택하고 이동합니다.
+// 국가 소개, 블로그 버튼, 연령 결과를 연달아 볼 수 있는 지점으로 스크롤합니다.
+// 긴 국가 소개는 화면 높이상 세 영역을 동시에 담기 어려워 버튼을 화면 중간에 둡니다.
+function scrollToSelectedCountryDetails() {
+  const intro = document.getElementById(selectedCountry + "CountryIntro");
+  const guide = document.getElementById("countryGuideLink");
+  const ageResult = document.getElementById("result");
+  const target = guide && !guide.hidden ? guide : ageResult;
+  if (!target) return;
+
+  const absoluteTop = element => element.getBoundingClientRect().top + window.scrollY;
+  const viewportHeight = window.innerHeight;
+  const introTop = intro && !intro.hidden ? absoluteTop(intro) : absoluteTop(target);
+  const resultBottom = ageResult ? absoluteTop(ageResult) + ageResult.offsetHeight : absoluteTop(target) + target.offsetHeight;
+  const contentHeight = resultBottom - introTop;
+
+  // 충분히 높은 화면이면 세 영역 전체를 가운데로; 그렇지 않으면 상세정보 버튼 부근에 맞춥니다.
+  const scrollTop = contentHeight <= viewportHeight - 32
+    ? introTop - (viewportHeight - contentHeight) / 2
+    : absoluteTop(target) - viewportHeight * 0.42;
+  window.scrollTo({ top: Math.max(0, scrollTop), behavior: "smooth" });
+}
+
+function jumpToCountryOnMap(code) {
+  if (!countries[code]) return;
+  selectCountry(code);
+  scrollToSelectedCountryDetails();
+}
+
+// 동적으로 생성된 검색 결과 카드의 클릭과 키보드 조작을 지원합니다.
+const allCountriesResult = document.getElementById("allCountriesResult");
+allCountriesResult.addEventListener("click", event => {
+  const card = event.target.closest("[data-country-code]");
+  if (card) jumpToCountryOnMap(card.dataset.countryCode);
+});
+allCountriesResult.addEventListener("keydown", event => {
+  if (event.key !== "Enter" && event.key !== " ") return;
+  const card = event.target.closest("[data-country-code]");
+  if (!card) return;
+  event.preventDefault();
+  jumpToCountryOnMap(card.dataset.countryCode);
+});
+
+  // 대륙별 표시 전용 분류: 연령·비자 조건에는 영향을 주지 않습니다.
+  const resultRegions = [
+    { id: "europe", label: "유럽", symbol: "🌍", codes: ["netherlands","denmark","germany","latvia","luxembourg","belgium","sweden","spain","ireland","andorra","uk","austria","italy","czech","portugal","poland","france","hungary","finland"] },
+    { id: "asia", label: "아시아", symbol: "🌏", codes: ["japan","taiwan","hongkong","israel"] },
+    { id: "oceania", label: "오세아니아", symbol: "🌊", codes: ["australia","newzealand"] },
+    { id: "northamerica", label: "북미", symbol: "🍁", codes: ["canada"] },
+    { id: "southamerica", label: "중남미", symbol: "🌎", codes: ["argentina","chile","brazil"] }
+  ];
+
+function findEligibleCountries() {
+  const birthInfo = readBirthInfo();
+  if (!birthInfo) return;
+  const { year, month, day, today, age } = birthInfo;
+
+  const todayUTC = Date.UTC(
+    today.getFullYear(),
+    today.getMonth(),
+    today.getDate()
+  );
+
+  const eligibleCountries = Object.entries(countries)
+    .filter(([, country]) =>
+      !country.pending &&
+      age >= country.minAge &&
+      age <= country.maxAge
+    )
+    .map(([code, country]) => {
+      const lastDate = birthdayAtAge(
+        year, month, day, country.maxAge + 1
+      );
+
+      lastDate.setDate(lastDate.getDate() - 1);
+
+      const lastUTC = Date.UTC(
+        lastDate.getFullYear(),
+        lastDate.getMonth(),
+        lastDate.getDate()
+      );
+
+      const days = Math.round(
+        (lastUTC - todayUTC) / (24 * 60 * 60 * 1000)
+      );
+
+      return { code, country, lastDate, days };
+    })
+    .sort((a, b) =>
+      a.days - b.days ||
+      a.country.name.localeCompare(b.country.name, "ko")
+    );
+  // 국가 카드: 연령별 대분류의 대륙별 하위 목록에 표시합니다.
+  const renderCountryCard = ({ code, country }) => {
+    const flagCode = Array.from(country.flag)
+      .map(letter => String.fromCharCode(letter.codePointAt(0) - 127397))
+      .join("").toLowerCase();
+    return `
+      <div class="age-country-card" role="button" tabindex="0"
+           data-country-code="${code}" aria-label="${country.name} 지도에서 확인하기">
+        <img class="age-country-flag" src="https://flagcdn.com/${flagCode}.svg"
+             alt="${country.name} 국기" width="30" height="23">
+        <div class="age-country-info">
+          <div class="age-country-name">${country.name}</div>
+          <div class="age-country-stay">
+            <span>${stayPeriods[code]?.text || "체류 기간 확인 중"}</span>
+            ${stayPeriods[code]?.badge ? `
+              <details class="stay-extra">
+                <summary class="stay-badge">${stayPeriods[code].badge}</summary>
+                <div class="stay-extra-detail">${stayPeriods[code].detail}</div>
+              </details>
+            ` : ""}
+          </div>
+        </div>
+      </div>`;
+  };
+
+  // 연령 마감이 빠른 대분류부터 표시하고, 안에서는 대륙을 가는 구분선으로 표시합니다.
+  const byAge = new Map();
+  for (const item of eligibleCountries) {
+    const maxAge = item.country.maxAge;
+    if (!byAge.has(maxAge)) byAge.set(maxAge, []);
+    byAge.get(maxAge).push(item);
+  }
+
+  const groupsHTML = Array.from(byAge.entries()).map(([maxAge, ageItems]) => {
+    const { lastDate, days } = ageItems[0];
+    const dateText = `${lastDate.getFullYear()}. ${String(lastDate.getMonth() + 1).padStart(2, "0")}. ${String(lastDate.getDate()).padStart(2, "0")}`;
+
+    const continentsHTML = resultRegions.map(region => {
+      const items = ageItems.filter(item => region.codes.includes(item.code));
+      if (!items.length) return "";
+      return `
+        <section class="result-continent">
+          <h4 class="result-continent-heading">
+            <span aria-hidden="true">${region.symbol}</span>
+            <span>${region.label}</span>
+            <span class="continent-count">${items.length}개 국가·지역</span>
+          </h4>
+          <div class="age-country-grid">${items.map(renderCountryCard).join("")}</div>
+        </section>`;
+    }).join("");
+
+    return `
+      <section class="result-age-section">
+        <h3 class="result-age-heading">
+          <span>만 ${maxAge}세까지 · ${ageItems.length}개 국가·지역</span>
+          <span class="age-group-dday">D-${days.toLocaleString("ko-KR")}</span>
+        </h3>
+        <div class="result-age-content">
+          ${continentsHTML}
+          <p class="result-age-date">연령 기준상 마지막 해당 날짜 ${dateText}</p>
+        </div>
+      </section>`;
+  }).join("");
+
+  result.style.display = "none";
+  result.innerHTML = "";
+
+  document.getElementById("allCountriesResult").innerHTML = `
+    <h2 class="results-heading">
+      워홀 연령 기준 충족 국가·지역 ${eligibleCountries.length}개
+    </h2>
+
+    <div class="results-description">
+      ${year}년 ${month}월 ${day}일생 · 현재 만 ${age}세
+      <br>
+      나이 제한이 가까운 순서로 분류하고, 각 나이 그룹 안에서는 대륙별로 표시합니다.
+    </div>
+
+    ${eligibleCountries.length
+      ? groupsHTML
+      : `<p class="result-info">
+           현재 등록된 기준으로 연령을 충족하는 국가가 없습니다.
+         </p>`
+    }
+
+    <div class="results-notice">
+      ※ D-day는 연령 기준으로 계산한 날짜이며, 실제 비자 신청 마감일과 다를 수 있습니다.
+
+  <div style="margin-top: 12px;">
+    자료 출처: 재외동포청 워킹홀리데이 관련 안내자료
+  </div>
+</div>
+  `;
+
+  // 전체 국가 결과를 계산한 뒤, 지도 결과의 기본 국가를 캐나다로 표시합니다.
+  // 사용자가 결과 카드에서 다른 국가를 누르면 기존대로 해당 국가로 변경됩니다.
+  selectCountry("canada");
+}
+  updateDays();
+  selectCountry("canada");
+document.getElementById("footerYear").textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,111 @@
+{
+  "base": "http://127.0.0.1:4173",
+  "checkedAt": "2026-10-26T17:03:32.737Z",
+  "reports": [
+    {
+      "label": "chromium-320-light",
+      "status": "pass"
+    },
+    {
+      "label": "chromium-320-dark",
+      "status": "pass"
+    },
+    {
+      "label": "chromium-375-light",
+      "status": "pass"
+    },
+    {
+      "label": "chromium-375-dark",
+      "status": "pass"
+    },
+    {
+      "label": "chromium-390-light",
+      "status": "pass"
+    },
+    {
+      "label": "chromium-390-dark",
+      "status": "pass"
+    },
+    {
+      "label": "chromium-412-light",
+      "status": "pass"
+    },
+    {
+      "label": "chromium-412-dark",
+      "status": "pass"
+    },
+    {
+      "label": "chromium-768-light",
+      "status": "pass"
+    },
+    {
+      "label": "chromium-768-dark",
+      "status": "pass"
+    },
+    {
+      "label": "chromium-1440-light",
+      "status": "pass"
+    },
+    {
+      "label": "chromium-1440-dark",
+      "status": "pass"
+    },
+    {
+      "label": "chromium-pages-http-keyboard",
+      "status": "pass"
+    },
+    {
+      "label": "webkit-320-light",
+      "status": "pass"
+    },
+    {
+      "label": "webkit-320-dark",
+      "status": "pass"
+    },
+    {
+      "label": "webkit-375-light",
+      "status": "pass"
+    },
+    {
+      "label": "webkit-375-dark",
+      "status": "pass"
+    },
+    {
+      "label": "webkit-390-light",
+      "status": "pass"
+    },
+    {
+      "label": "webkit-390-dark",
+      "status": "pass"
+    },
+    {
+      "label": "webkit-412-light",
+      "status": "pass"
+    },
+    {
+      "label": "webkit-412-dark",
+      "status": "pass"
+    },
+    {
+      "label": "webkit-768-light",
+      "status": "pass"
+    },
+    {
+      "label": "webkit-768-dark",
+      "status": "pass"
+    },
+    {
+      "label": "webkit-1440-light",
+      "status": "pass"
+    },
+    {
+      "label": "webkit-1440-dark",
+      "status": "pass"
+    },
+    {
+      "label": "webkit-pages-http-keyboard",
+      "status": "pass"
+    }
+  ],
+  "errors": []
+}
