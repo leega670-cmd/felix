@@ -79,6 +79,9 @@ for(const [name,engine,device] of [['chromium',chromium,devices['Pixel 7']],['we
   for(const path of ['/about/','/privacy/','/contact/','/wha-qa-nonexistent']){
    const response=await page.goto(base+path,{waitUntil:'domcontentloaded'});assert.equal(response.status(),path.includes('nonexistent')?404:200);
    await noOverflow(page,`${name} ${path}`);await access(page,`${name} ${path}`);
+   if(!path.includes('nonexistent')){
+    assert.equal(await page.locator('script[src="https://www.clarity.ms/tag/z3vadqom94"]').count(),1);
+   }
   }
   for(const path of ['/ja','/ja/','/ja/old-page']){
    const ja=await context.request.get(base+path,{maxRedirects:0});assert.equal(ja.status(),404);

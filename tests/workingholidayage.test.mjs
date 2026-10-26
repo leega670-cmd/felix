@@ -3,7 +3,7 @@ import vm from 'node:vm';
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 const html = readFileSync(new URL('../workingholidayage/index.html', import.meta.url), 'utf8');
-const scripts = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(m => m[1]);
+const scripts = [...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/g)].map(m => m[1]);
 function load(today = '2026-10-26T12:00:00') {
   const elements = new Map();
   class Element {
@@ -25,6 +25,7 @@ function load(today = '2026-10-26T12:00:00') {
     documentElement: new Element(),
     getElementById: id => elements.get(id) || null,
     createElement: () => new Element(),
+    getElementsByTagName: () => [{ parentNode: { insertBefore() {} } }],
     querySelector: selector => selector === '.map-section .calculator' ? calculator : null,
     querySelectorAll: selector => selector === '.country-card' ? elements.get('countryList').children : [],
   };
