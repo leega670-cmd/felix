@@ -14,19 +14,79 @@
 <link rel="icon" href="/favicon.png" type="image/png">
 <link rel="canonical" href="https://workingholidayage.com/">
 
+  <script>
+    // Apply the saved preference before the page is painted.
+    (() => {
+      let savedTheme;
+      try { savedTheme = localStorage.getItem("workingholidayage-theme"); } catch (_) {}
+      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)");
+      const hasSavedTheme = savedTheme === "light" || savedTheme === "dark";
+      document.documentElement.dataset.theme = hasSavedTheme
+        ? savedTheme : (systemTheme.matches ? "dark" : "light");
+      window.workingHolidayTheme = { systemTheme, manual: hasSavedTheme };
+    })();
+  </script>
   <style>
+:root {
+  color-scheme: light;
+  --on-button: #fff;
+  --primary-button: #2563eb;
+  --neutral-button: #222;
+  --page: #f5f6f8;
+  --surface: white;
+  --panel: #f7f7f7;
+  --soft-blue: #eff5ff;
+  --blue-hover: #dbeafe;
+  --text: #222;
+  --heading: #193153;
+  --muted: #666;
+  --subtle: #777;
+  --border: #e5e5e5;
+  --blue-border: #cfe0ff;
+  --hover-border: #bbb;
+  --link: #2563eb;
+  --success-bg: #eaf8f0;
+  --success-border: #d5ebdd;
+  --success-label: #286947;
+  --success: #087d43;
+  --gradient-start: #f0f6ff;
+  --gradient-end: #f8fbff;
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #111827;
+  --surface: #1f2937;
+  --panel: #182233;
+  --soft-blue: #1b2e4a;
+  --blue-hover: #28446b;
+  --text: #f1f5f9;
+  --heading: #dbeafe;
+  --muted: #b9c6d8;
+  --subtle: #a5b3c7;
+  --border: #42516a;
+  --blue-border: #45658e;
+  --hover-border: #94a3b8;
+  --link: #93c5fd;
+  --success-bg: #153b2c;
+  --success-border: #35634d;
+  --success-label: #a7dfbb;
+  --success: #6ee7a0;
+  --gradient-start: #1b2e4a;
+  --gradient-end: #1f2937;
+}
+
     * { box-sizing: border-box; }
 
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: #f5f6f8;
-      color: #222;
+      background: var(--page);
+      color: var(--text);
     }
 
     header {
-      background: white;
-      border-bottom: 1px solid #e5e5e5;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
       padding: 20px;
     }
 
@@ -50,7 +110,7 @@
     }
 
     .description {
-      color: #666;
+      color: var(--muted);
       margin-bottom: 35px;
       line-height: 1.6;
     }
@@ -71,7 +131,7 @@
     }
 
     .country-card {
-      background: white;
+      background: var(--surface);
       border: 2px solid transparent;
       border-radius: 14px;
       padding: 20px 10px;
@@ -81,11 +141,11 @@
 
     .country-card:hover {
       transform: translateY(-2px);
-      border-color: #bbb;
+      border-color: var(--hover-border);
     }
 
     .country-card.active {
-      border-color: #222;
+      border-color: var(--text);
     }
 
     .country-flag {
@@ -106,7 +166,7 @@
     .calculator {
       max-width: 760px;
       margin: 0 auto;
-      background: white;
+      background: var(--surface);
       padding: 40px 30px;
       border-radius: 15px;
       box-shadow: 0 5px 20px rgba(0,0,0,0.06);
@@ -119,7 +179,7 @@
     }
 
     .age-rule {
-      color: #666;
+      color: var(--muted);
       margin-bottom: 30px;
     }
 
@@ -140,9 +200,9 @@
     select {
       padding: 12px 8px;
       font-size: 16px;
-      border: 1px solid #ccc;
+      border: 1px solid var(--border);
       border-radius: 8px;
-      background: white;
+      background: var(--surface);
     }
 
     #year { width: 110px; }
@@ -155,8 +215,8 @@
       padding: 14px 35px;
       border: none;
       border-radius: 8px;
-      background: #222;
-      color: white;
+      background: var(--neutral-button);
+      color: var(--on-button);
       font-size: 17px;
       cursor: pointer;
     }
@@ -168,7 +228,7 @@
     #result {
       margin-top: 30px;
       padding: 25px;
-      background: #f5f6f8;
+      background: var(--page);
       border-radius: 10px;
       display: none;
     }
@@ -181,14 +241,14 @@
 
     .result-info {
       line-height: 1.8;
-      color: #555;
+      color: var(--muted);
     }
 
     .deadline {
       margin-top: 20px;
       margin-bottom: 20px;
       padding: 18px;
-      background: white;
+      background: var(--surface);
       border-radius: 8px;
       font-size: 18px;
       font-weight: bold;
@@ -200,24 +260,24 @@
       grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
       gap: 14px;
       align-items: center;
-      background: #eaf8f0;
-      border: 1px solid #d5ebdd;
+      background: var(--success-bg);
+      border: 1px solid var(--success-border);
       border-radius: 12px;
       padding: 22px 18px;
       margin: 20px 0 12px;
     }
-    .deadline-countdown { border-right: 1px solid #bad9c6; padding-right: 12px; }
-    .deadline-label { font-size: 14px; color: #286947; font-weight: 600; }
-    .deadline-days { color: #087d43; font-size: clamp(32px, 5vw, 52px); font-weight: 800; line-height: 1.2; margin-top: 6px; }
-    .deadline-date { font-size: clamp(17px, 2.4vw, 23px); font-weight: 750; color: #252525; margin-top: 8px; }
+    .deadline-countdown { border-right: 1px solid var(--success-border); padding-right: 12px; }
+    .deadline-label { font-size: 14px; color: var(--success-label); font-weight: 600; }
+    .deadline-days { color: var(--success); font-size: clamp(32px, 5vw, 52px); font-weight: 800; line-height: 1.2; margin-top: 6px; }
+    .deadline-date { font-size: clamp(17px, 2.4vw, 23px); font-weight: 750; color: var(--text); margin-top: 8px; }
     .deadline-facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-bottom: 18px; }
-    .deadline-fact { background: white; border: 1px solid #e1e5eb; border-radius: 10px; padding: 14px 12px; }
-    .deadline-fact-label { color: #666; font-size: 13px; margin-bottom: 6px; }
+    .deadline-fact { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 12px; }
+    .deadline-fact-label { color: var(--muted); font-size: 13px; margin-bottom: 6px; }
     .deadline-fact-value { font-weight: 750; font-size: clamp(15px, 2.2vw, 20px); }
-    .deadline-fact-value.age { color: #1565c0; }
+    .deadline-fact-value.age { color: var(--link); }
     @media (max-width: 480px) {
       .deadline-overview { grid-template-columns: 1fr; gap: 12px; text-align: center; }
-      .deadline-countdown { border-right: none; border-bottom: 1px solid #bad9c6; padding: 0 0 12px; }
+      .deadline-countdown { border-right: none; border-bottom: 1px solid var(--success-border); padding: 0 0 12px; }
       .deadline-facts { gap: 8px; }
       .deadline-fact { padding: 12px 8px; }
     }
@@ -226,7 +286,7 @@
       margin-top: 70px;
       padding: 30px;
       text-align: center;
-      color: #888;
+      color: var(--subtle);
       font-size: 13px;
     }
 
@@ -281,8 +341,8 @@
 }
 
 .eligible-card {
-  background: #f5f6f8;
-  border: 1px solid #e5e5e5;
+  background: var(--page);
+  border: 1px solid var(--border);
   border-radius: 12px;
   padding: 18px 10px;
   text-align: center;
@@ -296,7 +356,7 @@
 
 .eligible-detail {
   font-size: 13px;
-  color: #555;
+  color: var(--muted);
   line-height: 1.7;
 }
 
@@ -306,7 +366,7 @@
   }
 }
 .map-guide {
-  color: #666;
+  color: var(--muted);
   font-size: 14px;
   line-height: 1.6;
   margin-bottom: 15px;
@@ -317,7 +377,7 @@
   margin: 0 auto 30px;
   overflow-x: auto;
   border-radius: 14px;
-  background: #f7f7f7;
+  background: var(--panel);
 }
 
 .world-map {
@@ -372,12 +432,12 @@
   margin: 0 auto;
   padding: 30px;
   border-radius: 20px;
-  background: #eff5ff;
-  color: #193153;
+  background: var(--soft-blue);
+  color: var(--heading);
 }
 
 .hero-brand {
-  color: #2563eb;
+  color: var(--link);
   font-size: 15px;
   margin-bottom: 18px;
 }
@@ -389,13 +449,13 @@
 }
 
 .hero-description {
-  color: #607493;
+  color: var(--muted);
   line-height: 1.7;
   margin: 0 0 22px;
 }
 
 .birth-panel {
-  background: white;
+  background: var(--surface);
   padding: 20px;
   border-radius: 16px;
 }
@@ -417,8 +477,8 @@
   min-width: 0;
   height: 54px;
   text-align: center;
-  color: #193153;
-  border-color: #dce2eb;
+  color: var(--heading);
+  border-color: var(--border);
 }
 
 .birth-fields #year,
@@ -432,7 +492,7 @@
   width: 100%;
   margin-top: 15px;
   padding: 18px 10px;
-  background: #2563eb;
+  background: var(--primary-button);
   font-weight: bold;
 }
 
@@ -470,7 +530,7 @@
 }
 
 .results-description {
-  color: #666;
+  color: var(--muted);
   font-size: 14px;
   line-height: 1.7;
   margin-bottom: 18px;
@@ -486,8 +546,8 @@
   align-items: center;
   gap: 16px;
   padding: 20px;
-  background: white;
-  border: 1px solid #e1e5eb;
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 14px;
 }
 
@@ -510,7 +570,7 @@
 }
 
 .row-date {
-  color: #666;
+  color: var(--muted);
   font-size: 13px;
   line-height: 1.6;
 }
@@ -523,20 +583,20 @@
 .row-dday {
   font-size: 26px;
   font-weight: bold;
-  color: #193153;
-  white-space: nowrap;
+  color: var(--heading);
+  var(--surface)-space: nowrap;
 }
 
 .row-countdown-label {
   margin-top: 5px;
   font-size: 12px;
-  color: #777;
+  color: var(--subtle);
 }
 
 .results-notice {
   margin-top: 18px;
   font-size: 13px;
-  color: #777;
+  color: var(--subtle);
   line-height: 1.7;
 }
 
@@ -601,13 +661,13 @@
 .age-group-title {
   margin: 0;
   font-size: 17px;
-  color: #193153;
+  color: var(--heading);
 }
 
 .age-group-dday {
   font-size: 16px;
   font-weight: bold;
-  color: #2563eb;
+  color: var(--link);
 }
 
 .age-country-grid {
@@ -623,8 +683,8 @@
   gap: 9px;
   min-width: 0;
   padding: 12px;
-  background: white;
-  border: 1px solid #e1e5eb;
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 10px;
 }
 
@@ -644,7 +704,7 @@
 
 .age-group-date {
   margin: 8px 0 0;
-  color: #666;
+  color: var(--muted);
   font-size: 12px;
   line-height: 1.6;
 }
@@ -672,12 +732,12 @@
   margin-top: 6px;
   font-size: 11px;
   font-weight: normal;
-  color: #64748b;
+  color: var(--muted);
   line-height: 1.5;
 }
 
 .age-country-stay > span {
-  white-space: nowrap;
+  var(--surface)-space: nowrap;
 }
 
 /* 태블릿에서는 국가 카드의 가로 공간을 확보합니다. */
@@ -696,10 +756,10 @@
   display: inline-flex;
   align-items: center;
   padding: 3px 7px;
-  border: 1px solid #cfe0ff;
+  border: 1px solid var(--blue-border);
   border-radius: 999px;
-  background: #eff6ff;
-  color: #2563eb;
+  background: var(--soft-blue);
+  color: var(--link);
   font-size: 10px;
   font-weight: bold;
   line-height: 1.4;
@@ -721,11 +781,11 @@
 }
 
 .stay-badge:hover {
-  background: #dbeafe;
+  background: var(--blue-border);
 }
 
 .stay-badge:focus-visible {
-  outline: 2px solid #2563eb;
+  outline: 2px solid var(--link);
   outline-offset: 3px;
 }
 
@@ -737,26 +797,26 @@
   margin-top: 7px;
   padding: 8px 10px;
   border-radius: 8px;
-  background: #f8fafc;
-  color: #475569;
+  background: var(--panel);
+  color: var(--muted);
   font-size: 11px;
   line-height: 1.6;
   overflow-wrap: anywhere;
 }
 /* 1. 생년월일 입력 영역 */
 .search-hero {
-  border: 1px solid #cbdcf5;
+  border: 1px solid var(--blue-border);
   border-radius: 22px;
-  background: linear-gradient(135deg, #f0f6ff, #f8fbff);
+  background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
   box-shadow: 0 6px 20px rgba(30, 64, 175, 0.05);
 }
 
 /* 2. 워홀 가능 국가 결과 영역 */
 #allCountriesResult:not(:empty) {
   padding: 26px;
-  border: 1px solid #dbe3ee;
+  border: 1px solid var(--border);
   border-radius: 22px;
-  background: #ffffff;
+  background: var(--surface);
   box-shadow: 0 6px 20px rgba(15, 23, 42, 0.04);
 }
 
@@ -767,32 +827,32 @@
 
 /* 결과 패널 안의 국가 카드 */
 .age-country-card {
-  background: #f8fafc;
-  border-color: #e2e8f0;
+  background: var(--panel);
+  border-color: var(--border);
 }
 
 /* 3. 세계지도 및 선택 국가 확인 영역 */
 .map-section {
   padding: 26px;
-  border: 1px solid #dbe3ee;
+  border: 1px solid var(--border);
   border-radius: 22px;
-  background: #f8fafc;
+  background: var(--panel);
   box-shadow: 0 6px 20px rgba(15, 23, 42, 0.04);
 }
 
 .map-section h2 {
   margin-top: 0;
-  color: #193153;
+  color: var(--heading);
 }
 
 .map-section .map-scroll {
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--border);
   border-radius: 14px;
 }
 
 /* 지도 아래 선택 국가 계산기 */
 .map-section .calculator {
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--border);
   border-radius: 16px;
   box-shadow: none;
 }
@@ -826,10 +886,10 @@
 /* 연령별 대분류 → 대륙별 중분류: 스크롤을 줄이는 간결한 결과 화면 */
 .result-age-section {
   margin-top: 14px;
-  border: 1px solid #dae5f4;
+  border: 1px solid var(--border);
   border-radius: 14px;
   overflow: hidden;
-  background: #fff;
+  background: var(--surface);
 }
 .result-age-heading {
   display: flex;
@@ -839,15 +899,15 @@
   gap: 6px 12px;
   margin: 0;
   padding: 12px 15px;
-  background: #eaf2ff;
-  border-left: 5px solid #2563eb;
-  color: #173b75;
+  background: var(--soft-blue);
+  border-left: 5px solid var(--link);
+  color: var(--heading);
   font-size: 18px;
   font-weight: 800;
 }
 .result-age-heading .age-group-dday {
   font-size: 16px;
-  color: #2563eb;
+  color: var(--link);
 }
 .result-age-content { padding: 0 14px 12px; }
 .result-continent { margin: 0; }
@@ -857,8 +917,8 @@
   gap: 8px;
   margin: 12px 0 8px;
   padding-top: 9px;
-  border-top: 1px solid #dbe3ee;
-  color: #52647d;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
   font-size: 13px;
   font-weight: 700;
 }
@@ -870,20 +930,20 @@
 .result-continent-heading .continent-count {
   margin-left: auto;
   font-weight: 500;
-  color: #738299;
+  color: var(--subtle);
   font-size: 12px;
 }
 .result-continent .age-country-grid { margin: 0; }
 .result-continent .age-country-card {
   min-height: 66px;
   padding: 9px 10px;
-  background: #f8fafc;
-  border-color: #e2e8f0;
+  background: var(--panel);
+  border-color: var(--border);
   text-align: left;
 }
 .result-continent .age-country-card:hover {
-  background: #f1f7ff;
-  border-color: #93bafa;
+  background: var(--soft-blue);
+  border-color: var(--blue-border);
 }
 .result-continent .age-country-info {
   display: flex;
@@ -892,7 +952,7 @@
 }
 .result-age-date {
   margin: 8px 0 0;
-  color: #6b7280;
+  color: var(--muted);
   font-size: 12px;
   line-height: 1.5;
 }
@@ -912,23 +972,23 @@
 .country-guide-link {
   margin: 0 0 18px;
   padding: 15px 16px;
-  border: 1px solid #dbeafe;
+  border: 1px solid var(--blue-border);
   border-radius: 12px;
-  background: #f0f6ff;
+  background: var(--gradient-start);
   text-align: left;
 }
 .country-guide-link strong {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #193153;
+  color: var(--heading);
   font-size: 16px;
   line-height: 1.4;
   margin: 0 0 5px;
 }
 .country-guide-link strong::before { content: "📖"; font-size: 17px; }
 .country-guide-link p {
-  color: #53657f;
+  color: var(--muted);
   font-size: 13px;
   line-height: 1.5;
   margin: 0 0 10px;
@@ -937,9 +997,9 @@
   display: block;
   width: 100%;
   padding: 11px 12px;
-  background: #2563eb;
+  background: var(--primary-button);
   border-radius: 8px;
-  color: #fff;
+  color: var(--on-button);
   text-decoration: none;
   font-size: 15px;
   font-weight: 700;
@@ -959,8 +1019,8 @@
 .canada-country-intro {
   margin-top: 18px;
   padding: 18px 0 4px;
-  border-top: 1px solid #dbe3ee;
-  color: #334155;
+  border-top: 1px solid var(--border);
+  color: var(--heading);
   text-align: left;
 }
 .canada-intro-heading {
@@ -976,14 +1036,14 @@
   height: 35px;
   object-fit: contain;
   flex-shrink: 0;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--border);
   border-radius: 5px;
-  background: #ffffff;
+  background: var(--surface);
 }
 .canada-intro-heading > div { min-width: 0; }
 .canada-intro-kicker {
   display: block;
-  color: #64748b;
+  color: var(--muted);
   font-size: 12px;
   line-height: 1.5;
   letter-spacing: -0.01em;
@@ -995,7 +1055,7 @@
   line-height: 1.25;
   font-weight: 800;
   letter-spacing: -0.03em;
-  color: #193153;
+  color: var(--heading);
 }
 .canada-intro-facts {
   display: flex;
@@ -1009,21 +1069,21 @@
   gap: 9px;
   min-width: 0;
   padding: 9px 12px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--border);
   border-radius: 8px;
-  background: #f8fafc;
-  color: #334155;
+  background: var(--panel);
+  color: var(--heading);
   font-size: 13px;
   line-height: 1.5;
 }
-.canada-intro-facts b { color: #1e40af; font-weight: 700; white-space: nowrap; }
+.canada-intro-facts b { color: var(--link); font-weight: 700; var(--surface)-space: nowrap; }
 .canada-intro-facts span { overflow-wrap: anywhere; }
 .canada-country-intro p {
   margin: 0 0 12px;
   font-size: 14px;
   line-height: 1.82;
   letter-spacing: -0.012em;
-  color: #475569;
+  color: var(--muted);
   text-align: left;
   word-break: keep-all;
   overflow-wrap: break-word;
@@ -1046,7 +1106,7 @@
   margin: 0 0 20px;
   padding: 0 0 18px;
   border-top: 0;
-  border-bottom: 1px solid #d5e3f7;
+  border-bottom: 1px solid var(--blue-border);
 }
 .map-section .calculator > .country-guide-link { margin: 0 0 20px; }
 
@@ -1116,13 +1176,13 @@
 .result-continent .age-country-name { line-height: 1.35; }
 .result-continent .age-country-stay { margin-top: 5px; line-height: 1.45; }
 .result-continent .age-country-card:focus-visible {
-  outline: 3px solid #2563eb;
+  outline: 3px solid var(--link);
   outline-offset: 2px;
 }
 /* 개선 5: D-day 숫자에 시선을 모으되 기존 상태/날짜/주의문구는 유지 */
 .map-section .calculator .result-title { line-height: 1.35; }
 .map-section .calculator .deadline-overview {
-  border-color: #cce6d6;
+  border-color: var(--success-border);
   gap: 16px;
 }
 .map-section .calculator .deadline-countdown { display: flex; flex-direction: column; justify-content: center; }
@@ -1145,6 +1205,20 @@
   .map-section .calculator .deadline-days { font-size: clamp(34px, 10vw, 46px); }
   .map-section .calculator .deadline-date { font-size: clamp(17px, 4.7vw, 22px); }
 }
+
+.theme-toggle {
+  margin: 0;
+  padding: 10px 14px;
+  min-height: 44px;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.theme-toggle:focus-visible { outline: 3px solid var(--link); outline-offset: 3px; }
+a { color: var(--link); }
 </style>
 </head>
 
@@ -1152,8 +1226,39 @@
 
 <header>
   <div class="header-inner">
-    🌏 워홀 나이 계산기</div>
+    <span>🌏 워홀 나이 계산기</span>
+    <button type="button" id="themeToggle" class="theme-toggle" aria-label="다크 모드" aria-pressed="false">다크 모드</button>
+  </div>
 </header>
+
+<script>
+(() => {
+  const toggle = document.getElementById("themeToggle");
+  const state = window.workingHolidayTheme;
+  function updateToggle() {
+    const dark = document.documentElement.dataset.theme === "dark";
+    toggle.textContent = dark ? "☀️ 화이트 모드" : "🌙 다크 모드";
+    toggle.setAttribute("aria-label", "다크 모드");
+    toggle.setAttribute("aria-pressed", String(dark));
+    toggle.title = dark ? "화이트 모드로 전환" : "다크 모드로 전환";
+  }
+  toggle.addEventListener("click", () => {
+    const theme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+    document.documentElement.dataset.theme = theme;
+    state.manual = true;
+    try { localStorage.setItem("workingholidayage-theme", theme); } catch (_) {}
+    updateToggle();
+  });
+  state.systemTheme.addEventListener("change", event => {
+    if (!state.manual) {
+      document.documentElement.dataset.theme = event.matches ? "dark" : "light";
+      updateToggle();
+    }
+  });
+  updateToggle();
+})();
+</script>
+
 
 <main class="container">
 
