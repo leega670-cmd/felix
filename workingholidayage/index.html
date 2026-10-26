@@ -1258,6 +1258,84 @@ a { color: var(--link); }
 a:focus-visible, select:focus-visible, summary:focus-visible { outline: 3px solid var(--link); outline-offset: 3px; }
 @media (max-width: 600px) { .content-section { padding: 18px 16px; } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; } }
+
+/* 첫 번째 계산 영역 전용 여행 테마 */
+#calculator {
+  --surface: #fff;
+  --heading: #17324f;
+  --text: #17324f;
+  --muted: #596b80;
+  --subtle: #596b80;
+  --link: #2563eb;
+  --border: #dce6f0;
+  color-scheme: light;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: 54px 32px 38px;
+  border: 1px solid #cce6fa;
+  border-radius: 28px;
+  background: linear-gradient(160deg, #e5f5ff 0%, #d6edff 55%, #ecf8ff 100%);
+  box-shadow: none;
+}
+#calculator .travel-sky { position: absolute; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+#calculator .travel-cloud { position: absolute; width: 150px; height: 42px; border-radius: 80px; background: rgba(255,255,255,.75); }
+#calculator .travel-cloud::before,
+#calculator .travel-cloud::after { content: ""; position: absolute; background: inherit; border-radius: 50%; }
+#calculator .travel-cloud::before { width: 65px; height: 65px; left: 24px; bottom: 9px; }
+#calculator .travel-cloud::after { width: 85px; height: 85px; right: 15px; bottom: 3px; }
+#calculator .travel-cloud-left { top: 120px; left: -37px; transform: rotate(-7deg); }
+#calculator .travel-cloud-right { right: -48px; bottom: 86px; transform: scale(1.2); opacity: .8; }
+#calculator .travel-cloud-top { top: 27px; left: 27%; transform: scale(.5); opacity: .55; }
+#calculator .travel-plane { position: absolute; top: 25px; right: 31px; width: 66px; height: 66px; transform: rotate(25deg); color: #fff; filter: drop-shadow(0 4px 5px rgba(65,126,175,.16)); }
+#calculator .travel-route { position: absolute; top: 15px; right: 72px; width: 130px; height: 102px; color: #8fc4eb; opacity: .8; }
+#calculator .travel-card { max-width: 620px; margin: 0 auto; padding: 34px 40px 28px; border: 1px solid rgba(255,255,255,.9); border-radius: 26px; background: #fff; box-shadow: 0 16px 48px rgba(58,112,158,.12), 0 2px 6px rgba(58,112,158,.04); }
+#calculator .hero-brand { display: inline-flex; align-items: center; padding: 7px 12px; margin-bottom: 18px; border: 1px solid #dbeafe; border-radius: 999px; background: #f2f8ff; color: #2563eb; font-size: 11px; font-weight: 700; letter-spacing: .1em; line-height: 1.4; }
+#calculator h1 { margin: 0 0 14px; color: #17324f; font-size: clamp(28px, 3.5vw, 36px); font-weight: 800; line-height: 1.35; letter-spacing: -.055em; }
+#calculator .hero-title-highlight { display: block; color: #2563eb; }
+#calculator .hero-description { max-width: 390px; margin: 0 auto 12px; color: #596b80; font-size: 15px; line-height: 1.75; word-break: keep-all; }
+#calculator .travel-card > .scope-note { max-width: 440px; margin: 0 auto; font-size: 12px; line-height: 1.7; word-break: keep-all; }
+#calculator .birth-panel { margin: 24px 0 0; padding: 0; border-radius: 0; background: transparent; }
+#calculator .birth-label { margin-bottom: 10px; color: #17324f; font-size: 14px; font-weight: 700; }
+#calculator .birth-fields { gap: 10px; }
+#calculator .birth-fields select { height: 56px; padding: 12px 10px; border: 1px solid #dce6f0; border-radius: 12px; background: #f8fbff; color: #314b67; font-size: 16px; font-weight: 500; }
+#calculator .birth-fields select:hover { border-color: #93b9ee; }
+#calculator .birth-fields select:focus-visible { outline: 3px solid #2563eb; outline-offset: 3px; }
+#calculator .search-button { min-height: 56px; margin-top: 14px; padding: 15px 12px; border-radius: 12px; background: #2563eb; color: #fff; box-shadow: 0 6px 14px rgba(37,99,235,.18); font-size: 16px; font-weight: 700; line-height: 1.5; letter-spacing: -.02em; }
+#calculator .search-button:hover { background: #1d4ed8; opacity: 1; }
+#calculator .search-button:focus-visible { outline: 3px solid #1d4ed8; outline-offset: 4px; }
+#calculator #birthHelp { margin: 14px 0 0; color: #596b80; font-size: 12px; line-height: 1.7; word-break: keep-all; }
+#calculator .input-error { color: #b42318; }
+#calculator .quick-links { gap: 6px 20px; margin-top: 20px; padding-top: 16px; border-top: 1px solid #edf2f7; font-size: 12px; }
+#calculator .quick-links a { padding: 5px 0; color: #466684; text-underline-offset: 3px; }
+#calculator .quick-links a:hover { color: #1d4ed8; }
+@media (max-width: 600px) {
+  #calculator { padding: 42px 14px 22px; border-radius: 22px; }
+  #calculator .travel-card { padding: 27px 20px 22px; border-radius: 22px; }
+  #calculator .travel-plane { top: 12px; right: 12px; width: 46px; height: 46px; }
+  #calculator .travel-route { top: 7px; right: 41px; width: 86px; height: 65px; }
+  #calculator .travel-cloud-left { top: 80px; left: -92px; }
+  #calculator .travel-cloud-right { right: -96px; bottom: 52px; }
+  #calculator .travel-cloud-top { top: 4px; left: 5%; }
+  #calculator .hero-brand { margin-bottom: 16px; font-size: 10px; }
+  #calculator h1 { font-size: clamp(23px, 6.1vw, 30px); letter-spacing: -.05em; }
+  #calculator .hero-description { font-size: 14px; }
+  #calculator .travel-card > .scope-note { font-size: 11px; }
+  #calculator .birth-panel { margin-top: 22px; }
+  #calculator .birth-fields { gap: 7px; }
+  #calculator .birth-fields select { height: 52px; padding: 10px 5px; font-size: 15px; border-radius: 10px; }
+  #calculator .search-button { min-height: 54px; font-size: 15px; }
+  #calculator #birthHelp { font-size: 11px; }
+  #calculator .quick-links { gap: 6px 16px; margin-top: 16px; padding-top: 12px; font-size: 11px; }
+}
+@media (max-width: 360px) {
+  #calculator { padding-right: 10px; padding-left: 10px; }
+  #calculator .travel-card { padding-right: 15px; padding-left: 15px; }
+  #calculator .birth-fields { gap: 5px; }
+  #calculator .birth-fields select { font-size: 14px; }
+  #calculator .quick-links { gap: 4px 12px; }
+}
+
 </style>
 </head>
 
@@ -1304,15 +1382,22 @@ a:focus-visible, select:focus-visible, summary:focus-visible { outline: 3px soli
 
   <!-- 전체 국가 검색 -->
   <section class="search-hero" id="calculator" aria-labelledby="calculatorTitle">
+    <div class="travel-sky" aria-hidden="true">
+      <span class="travel-cloud travel-cloud-left"></span>
+      <span class="travel-cloud travel-cloud-right"></span>
+      <span class="travel-cloud travel-cloud-top"></span>
+      <svg class="travel-route" viewBox="0 0 130 102" fill="none" focusable="false"><path d="M2 93C20 55 61 100 74 58S99 26 126 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="4 7"/></svg>
+      <svg class="travel-plane" viewBox="0 0 24 24" fill="currentColor" focusable="false"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5L21 16Z"/></svg>
+    </div>
+    <div class="travel-card">
     <div class="hero-brand">🌐 WORKING HOLIDAY</div>
 
-    <h1 id="calculatorTitle">내 나이로 워홀 가능한 나라는?</h1>
+    <h1 id="calculatorTitle">내 나이로 <span class="hero-title-highlight">워홀 가능한 나라는?</span></h1>
 
     <p class="hero-description">
       생년월일로 국가별 워킹홀리데이 연령 조건을 비교하세요.
     </p>
 
-    <p class="scope-note">대한민국 국적자 기준 · 나이 조건만 비교하며 비자 발급이나 모집 여부를 판정하지 않습니다.</p>
     <form class="birth-panel" id="birthForm" data-clarity-mask="true" novalidate>
       <div class="birth-label" id="birthLabel">생년월일</div>
 
@@ -1340,6 +1425,7 @@ a:focus-visible, select:focus-visible, summary:focus-visible { outline: 3px soli
       <p id="birthHelp" class="scope-note">생년월일은 이 브라우저에서 계산에만 사용하며 저장하거나 전송하지 않습니다.</p>
     </form>
     <nav class="quick-links" aria-label="이용 안내"><a href="#how-it-works">계산 방법</a><a href="#sources">공식 출처</a><a href="#faq">자주 묻는 질문</a></nav>
+    </div>
   </section>
   <noscript><p class="content-section">계산 기능에는 JavaScript가 필요합니다. 아래 계산 방법과 공식 출처는 JavaScript 없이도 읽을 수 있습니다.</p></noscript>
 
